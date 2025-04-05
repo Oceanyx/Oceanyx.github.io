@@ -70,7 +70,7 @@
  *		## go top
  * # BLOG STYLES 
  * # PAGE STYLES 
- *		## services page
+ *		## Projects page
  *		## contact page
  *
  * ------------------------------------------------------------------ */
@@ -4651,9 +4651,9 @@ td:last-child {
 }
 
 /* --------------------------------------------------------------------
- * ## services page
+ * ## Projects page
  * -------------------------------------------------------------------- */
-.list-services {
+.list-Projects {
 	list-style : none;
 	font-size  : calc(var(--text-size) * 0.95);
 	font-weight: 400;
@@ -4663,7 +4663,7 @@ td:last-child {
 	margin-left: 0;
 }
 
-.list-services li {
+.list-Projects li {
 	display      : block;
 	border-bottom: 1px dotted var(--color-border);
 	padding      : 0.6rem 0;
@@ -4671,7 +4671,7 @@ td:last-child {
 	position     : relative;
 }
 
-.list-services li::before {
+.list-Projects li::before {
 	content         : "";
 	display         : block;
 	height          : 6px;

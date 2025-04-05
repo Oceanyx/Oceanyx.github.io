@@ -5,7 +5,7 @@ DESCRIPTION:
 Brian is a carefully crafted and modern HTML website template designed for freelancers, social 
 media managers, and marketing consultants who help businesses and companies improve their online 
 presence and establish long-lasting relationships with their communities. It is an excellent tool 
-for telling people about your skills and credentials, services, and other offerings, giving them 
+for telling people about your skills and credentials, Projects, and other offerings, giving them 
 a better idea of who you are.
 
 ==================================================================================================
@@ -14,15 +14,15 @@ a better idea of who you are.
 LICENSE:
 
 This free resource is provided by styleshout.com and is free to use in 
-both personal and commercial projects.
+both personal and commercial Projects.
 
 
 Rights:
 -------
 
-You are permitted to use this free resource in any number of personal and commercial projects for 
+You are permitted to use this free resource in any number of personal and commercial Projects for 
 yourself or a client. You may modify the resource according to your requirements and include them 
-in your projects under the following condition - you MUST give appropriate credit, provide an 
+in your Projects under the following condition - you MUST give appropriate credit, provide an 
 attribution link to styleshout.com.
 
 
