@@ -4740,3 +4740,23 @@ td:last-child {
 .contact-list li {
 	padding-left: 0;
 }
+.skills-icons {
+	display: flex;
+	flex-wrap: wrap;    /* Allows the icons to wrap to the next line */
+	gap: 20px;          /* Adjust space between icons as needed */
+	align-items: center;
+	justify-content: center; /* Centers icons horizontally */
+	padding: 10px 0;
+  }
+  
+  .skills-icons img {
+	width: 60px;  /* Increase size of icons */
+	height: auto; /* Maintain aspect ratio */
+	transition: transform 0.3s ease;
+  }
+  
+  .skills-icons img:hover {
+	transform: scale(1.1); /* Subtle hover effect */
+  }
+  
+  
