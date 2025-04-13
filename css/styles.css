@@ -4789,3 +4789,13 @@ td:last-child {
     transform: scaleX(1);
     transform-origin: bottom left;
 }
+
+figure {
+    text-align: center;
+    margin-top: 1em;
+}
+
+figcaption {
+    font-size: 0.9em;
+    color: black;
+}
