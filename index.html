@@ -1,420 +1,709 @@
-<!DOCTYPE html>
-<html lang="en" class="no-js" >
-<head>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Brian — Full-stack developer</title>
+		<meta
+			name="description"
+			content="Brian is a full-stack developer building Chroma, a local-first tool for mapping how you make sense of your own experiences." />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"
+			rel="stylesheet" />
+		<style>
+			:root {
+				--bg: #eef1f1;
+				--surface: #fdfdfb;
+				--ink: #1b1f27;
+				--ink-text: #e9eae6;
+				--ink-muted: #a7adb8;
+				--text: #1e2229;
+				--text-muted: #565d66;
+				--border: #d8dcdc;
+				--coral: #ff5d3a;
+				--coral-soft: #ffe4db;
+				--teal: #2ec4b6;
+				--teal-soft: #daf4f1;
+				--gold: #ffc857;
+				--wrap: 1040px;
+				--wrap-nav: 1400px;
+			}
 
-    <!--- basic page needs
-    ================================================== -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Brian</title>
+			* {
+				box-sizing: border-box;
+			}
+			html {
+				scroll-behavior: smooth;
+			}
 
-    <script>
-        document.documentElement.classList.remove('no-js');
-        document.documentElement.classList.add('js');
-    </script>
+			body {
+				margin: 0;
+				background: var(--bg);
+				color: var(--text);
+				font-family:
+					"Inter",
+					-apple-system,
+					BlinkMacSystemFont,
+					sans-serif;
+				font-size: 17px;
+				line-height: 1.6;
+				-webkit-font-smoothing: antialiased;
+			}
 
-    <!-- CSS
-    ================================================== -->
-    <link rel="stylesheet" href="css/vendor.css">
-    <link rel="stylesheet" href="css/styles.css">
+			h1,
+			h2,
+			.wordmark {
+				font-family: "Space Grotesk", sans-serif;
+				font-weight: 600;
+				letter-spacing: -0.01em;
+				margin: 0;
+			}
 
-    <!-- favicons
-    ================================================== -->
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="manifest" href="site.webmanifest">
+			a {
+				color: var(--text);
+				text-decoration-color: var(--border);
+				text-underline-offset: 3px;
+				text-decoration-thickness: 1.5px;
+			}
+			a:hover {
+				text-decoration-color: var(--coral);
+			}
+			a:focus-visible,
+			button:focus-visible {
+				outline: 2px solid var(--coral);
+				outline-offset: 3px;
+			}
 
-</head>
+			.wrap {
+				max-width: var(--wrap);
+				margin: 0 auto;
+				padding: 0 32px;
+			}
 
+			/* NAV */
+			header {
+				position: sticky;
+				top: 0;
+				background: rgba(238, 241, 241, 0.85);
+				backdrop-filter: blur(6px);
+				border-bottom: 1px solid var(--border);
+				z-index: 10;
+			}
+			.nav-inner {
+				max-width: var(--wrap-nav);
+				margin: 0 auto;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 18px 48px;
+			}
+			.wordmark {
+				font-size: 1.1rem;
+				text-decoration: none;
+			}
+			.nav-links {
+				display: flex;
+				gap: 22px;
+				align-items: center;
+				font-size: 0.95rem;
+			}
+			.nav-links a {
+				text-decoration: none;
+				color: var(--text-muted);
+			}
+			.nav-links a:hover {
+				color: var(--text);
+				text-decoration: underline;
+			}
+			.icon-link {
+				display: inline-flex;
+				color: var(--text-muted);
+				text-decoration: none !important;
+			}
+			.icon-link:hover {
+				color: var(--coral);
+			}
+			.icon-link svg {
+				width: 20px;
+				height: 20px;
+				display: block;
+			}
+			.band--dark .icon-link {
+				color: var(--ink-muted);
+			}
+			.band--dark .icon-link:hover {
+				color: var(--coral);
+			}
+			.icon-label {
+				display: inline-flex;
+				align-items: center;
+				gap: 8px;
+			}
 
-<body id="top">
+			/* BANDS (full-bleed section backgrounds) */
+			.band {
+				border-top: 1px solid var(--border);
+				padding: 64px 0;
+			}
+			.band--surface {
+				background: var(--surface);
+			}
+			.band--dark {
+				background: var(--ink);
+				color: var(--ink-text);
+				border-top: none;
+				padding: 88px 0 40px;
+			}
+			.band--dark h2 {
+				color: #fff;
+			}
+			.band--dark p {
+				color: var(--ink-muted);
+			}
+			.band--dark a {
+				color: var(--ink-text);
+				text-decoration-color: rgba(255, 255, 255, 0.25);
+			}
+			.band--dark a:hover {
+				text-decoration-color: var(--coral);
+			}
 
-    
-    <!-- preloader
-    ================================================== -->
-    <div id="preloader">
-        <div id="loader" class="dots-fade">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>
+			/* HERO */
+			.hero-section {
+				padding: 72px 0 64px;
+			}
+			.hero {
+				display: grid;
+				grid-template-columns: 1.2fr 1fr;
+				gap: 40px;
+				align-items: center;
+				min-height: 0;
+			}
+			.hero h1 {
+				font-size: clamp(2.4rem, 4.4vw, 3.4rem);
+				line-height: 1.08;
+			}
+			.hero p {
+				margin-top: 18px;
+				color: var(--text-muted);
+				font-size: 1.08rem;
+				max-width: 46ch;
+			}
 
+			.btn {
+				display: inline-block;
+				background: var(--coral);
+				color: #1a0e09;
+				font-weight: 600;
+				text-decoration: none;
+				padding: 12px 22px;
+				border-radius: 8px;
+				font-size: 0.95rem;
+				border: none;
+				cursor: pointer;
+			}
+			.btn:hover {
+				text-decoration: none;
+				background: #ff4c25;
+			}
+			.btn-row {
+				display: flex;
+				gap: 14px;
+				flex-wrap: wrap;
+				align-items: center;
+				margin-top: 28px;
+			}
+			.link-plain {
+				font-size: 0.95rem;
+			}
 
-    <!-- page wrap
-    ================================================== -->
-    <div id="page" class="s-pagewrap ss-home">
+			@keyframes fadeUp {
+				from {
+					opacity: 0;
+					transform: translateY(14px);
+				}
+				to {
+					opacity: 1;
+					transform: none;
+				}
+			}
+			.hero h1 {
+				animation: fadeUp 0.7s ease both;
+			}
+			.hero p {
+				animation: fadeUp 0.7s ease 0.12s both;
+			}
+			.hero .btn-row {
+				animation: fadeUp 0.7s ease 0.24s both;
+			}
+			.orbit-container {
+				animation: fadeUp 0.9s ease 0.1s both;
+			}
 
+			/* ORBIT GRAPHIC */
+			.orbit-container {
+				display: flex;
+				justify-content: center;
+			}
+			.orbit {
+				position: relative;
+				width: 300px;
+				height: 300px;
+			}
+			.planet {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 50px;
+				height: 50px;
+				margin: -25px 0 0 -25px;
+				border-radius: 50%;
+				background: var(--text);
+			}
+			.ring {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				border: 1.5px dashed var(--border);
+				border-radius: 50%;
+				transform: translate(-50%, -50%);
+			}
+			.ring.r1 {
+				width: 300px;
+				height: 300px;
+				animation: spin 18s linear infinite;
+			}
+			.ring.r2 {
+				width: 206px;
+				height: 206px;
+				animation: spin 12s linear infinite reverse;
+			}
+			.ring.r3 {
+				width: 122px;
+				height: 122px;
+				animation: spin 7s linear infinite;
+			}
+			.moon {
+				position: absolute;
+				top: -6px;
+				left: 50%;
+				width: 13px;
+				height: 13px;
+				margin-left: -6.5px;
+				border-radius: 50%;
+			}
+			.r1 .moon {
+				background: var(--teal);
+			}
+			.r2 .moon {
+				background: var(--gold);
+			}
+			.r3 .moon {
+				background: var(--coral);
+			}
 
-        <!-- # site header 
-        ================================================== -->
-        <header class="s-header">
+			@keyframes spin {
+				from {
+					transform: translate(-50%, -50%) rotate(0deg);
+				}
+				to {
+					transform: translate(-50%, -50%) rotate(360deg);
+				}
+			}
 
-            <div class="row s-header__inner width-sixteen-col">
+			@media (prefers-reduced-motion: reduce) {
+				.ring {
+					animation: none;
+				}
+				.hero h1,
+				.hero p,
+				.hero .btn-row,
+				.orbit-container {
+					animation: none;
+				}
+				.reveal {
+					transition: none;
+					opacity: 1;
+					transform: none;
+				}
+			}
 
-                <div class="s-header__block">
-                    <div class="s-header__logo">
-                        <a class="logo" href="index.html">
-                            <img src="images/logo.png" alt="Homepage">
-                        </a>
-                    </div>
+			/* SCROLL REVEAL */
+			.reveal {
+				opacity: 0;
+				transform: translateY(18px);
+				transition:
+					opacity 0.6s ease,
+					transform 0.6s ease;
+			}
+			.reveal.is-visible {
+				opacity: 1;
+				transform: none;
+			}
 
-                    <a class="s-header__menu-toggle" href="#0"><span>Menu</span></a>
-                </div> <!-- end s-header__block -->
+			/* SECTIONS */
+			.band h2 {
+				font-size: 1.6rem;
+				margin-bottom: 18px;
+			}
+			#about p {
+				color: var(--text-muted);
+				max-width: 64ch;
+			}
 
-                <nav class="s-header__nav">
-    
-                    <ul class="s-header__menu-links">
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="projects.html">Projects</a></li>
-                        <li><a href="blog.html">Journal</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul> <!-- s-header__menu-links -->
+			.tags {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 8px;
+				margin-top: 20px;
+			}
+			.tag {
+				font-family: "IBM Plex Mono", monospace;
+				font-size: 0.78rem;
+				background: var(--bg);
+				border: 1px solid var(--border);
+				color: var(--text-muted);
+				padding: 5px 10px;
+				border-radius: 6px;
+			}
+			.band--dark .tag {
+				background: rgba(255, 255, 255, 0.06);
+				border-color: rgba(255, 255, 255, 0.15);
+				color: var(--ink-muted);
+			}
 
-                    <div class="s-header__contact">
-                        <a href="contact.html" class="btn btn--primary s-header__contact-btn">Let's Work Together</a>                        
-                    </div> <!-- s-header__contact -->
-    
-                </nav> <!-- end s-header__nav -->
+			/* PROJECT CARD */
+			.project {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: 14px;
+				padding: 36px;
+				max-width: 760px;
+			}
+			.project-head {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				flex-wrap: wrap;
+			}
+			.project-head h3 {
+				font-family: "Space Grotesk", sans-serif;
+				font-size: 1.35rem;
+				margin: 0;
+			}
+			.badge {
+				font-size: 0.75rem;
+				font-weight: 600;
+				background: var(--teal-soft);
+				color: #0f6c63;
+				padding: 3px 10px;
+				border-radius: 100px;
+			}
+			.tagline {
+				color: var(--text-muted);
+				margin: 10px 0 0;
+				font-size: 1.02rem;
+			}
+			.project p.desc {
+				margin-top: 16px;
+				color: var(--text);
+				max-width: 62ch;
+			}
+			.project .tags {
+				margin-top: 22px;
+			}
+			.project-links {
+				margin-top: 24px;
+			}
 
-            </div> <!-- end s-header__inner -->
+			/* CONTACT */
+			#contact .btn-row {
+				margin-top: 22px;
+			}
+			.foot-note {
+				margin-top: 56px;
+				font-size: 0.85rem;
+				color: var(--ink-muted);
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				flex-wrap: wrap;
+			}
+			.visit-badge {
+				height: 14px;
+				opacity: 0.85;
+			}
 
-        </header> <!-- end s-header -->
+			@media (min-width: 900px) {
+				.orbit {
+					width: 340px;
+					height: 340px;
+				}
+				.ring.r1 {
+					width: 340px;
+					height: 340px;
+				}
+				.ring.r2 {
+					width: 234px;
+					height: 234px;
+				}
+				.ring.r3 {
+					width: 138px;
+					height: 138px;
+				}
+			}
 
+			@media (max-width: 760px) {
+				.hero {
+					grid-template-columns: 1fr;
+				}
+				.orbit-container {
+					order: -1;
+				}
+				.orbit {
+					width: 190px;
+					height: 190px;
+				}
+				.ring.r1 {
+					width: 190px;
+					height: 190px;
+				}
+				.ring.r2 {
+					width: 130px;
+					height: 130px;
+				}
+				.ring.r3 {
+					width: 78px;
+					height: 78px;
+				}
+				.nav-links {
+					gap: 16px;
+					font-size: 0.88rem;
+				}
+				.project {
+					padding: 24px;
+				}
+				.wrap {
+					padding: 0 20px;
+				}
+				.nav-inner {
+					padding: 16px 20px;
+				}
+			}
+		</style>
+	</head>
+	<body id="top">
+		<header>
+			<nav class="nav-inner">
+				<a class="wordmark" href="#top">brian</a>
+				<div class="nav-links">
+					<a href="#about">About</a>
+					<a href="#projects">Projects</a>
+					<a href="#contact">Contact</a>
+					<a
+						class="icon-link"
+						href="https://github.com/oceanyx"
+						target="_blank"
+						rel="noopener"
+						aria-label="GitHub">
+						<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+							<path
+								d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+						</svg>
+					</a>
+				</div>
+			</nav>
+		</header>
 
-        <!-- # site main content
-        ================================================== -->
-        <section id="content" class="s-content">
+		<main>
+			<section class="hero-section">
+				<div class="wrap hero">
+					<div>
+						<h1>Hi, I'm Brian.</h1>
+						<p>
+							I'm a full-stack developer who likes projects without an obvious
+							template to copy. Lately that means building tools for thinking
+							more clearly about your own life — not another to-do app.
+						</p>
+						<div class="btn-row">
+							<a class="btn" href="#projects">See what I'm building</a>
+						</div>
+					</div>
+					<div class="orbit-container">
+						<div class="orbit" aria-hidden="true">
+							<div class="ring r1"><div class="moon"></div></div>
+							<div class="ring r2"><div class="moon"></div></div>
+							<div class="ring r3"><div class="moon"></div></div>
+							<div class="planet"></div>
+						</div>
+					</div>
+				</div>
+			</section>
 
-            <!-- intro
-            ----------------------------------------------- -->
-            <section id="intro" class="s-intro">
+			<section id="about" class="band band--surface">
+				<div class="wrap reveal">
+					<h2>About</h2>
+					<p>
+						I build with React, Node, Python, and whatever database agrees to
+						sit still. I like problems that don't come with a template already
+						attached — right now that's less "build a dashboard" and more
+						"figure out how people actually make sense of their own
+						experiences."
+					</p>
+					<div class="tags">
+						<span class="tag">React</span>
+						<span class="tag">Node.js</span>
+						<span class="tag">Python</span>
+						<span class="tag">Flask</span>
+						<span class="tag">PostgreSQL</span>
+						<span class="tag">SQLite</span>
+						<span class="tag">Docker</span>
+						<span class="tag">Redux</span>
+					</div>
+				</div>
+			</section>
 
-                <div class="row s-intro__content width-sixteen-col">
+			<section id="projects" class="band">
+				<div class="wrap">
+					<h2 class="reveal">What I'm building</h2>
+					<div class="project reveal">
+						<div class="project-head">
+							<h3>Chroma</h3>
+							<span class="badge">Live</span>
+						</div>
+						<p class="tagline">
+							A local-first tool for mapping how you make sense of your own
+							experiences.
+						</p>
+						<p class="desc">
+							It's live and usable today, with more features on the way. Chroma
+							treats each thing you notice or do as a small planet. You attach
+							reflections to it — what you felt, what you did, what's actually
+							verifiable, and what pattern it fits — as moons orbiting that
+							planet. Planets link into constellations, and can be marked as
+							supporting or in tension with each other. The idea is to make the
+							gap between how something felt and what actually happened a little
+							easier to see, and to let patterns surface across a lot of small
+							reflections over time.
+						</p>
+						<p class="desc">
+							It runs entirely in your browser. No accounts, no server — nothing
+							ever leaves your device.
+						</p>
+						<div class="tags">
+							<span class="tag">Local-first</span>
+							<span class="tag">IndexedDB</span>
+							<span class="tag">Pan &amp; zoom canvas</span>
+							<span class="tag">No tracking</span>
+						</div>
+						<div class="project-links btn-row">
+							<a
+								class="btn"
+								href="https://oceanyx.github.io/Chroma/"
+								target="_blank"
+								rel="noopener"
+								>Try Chroma</a
+							>
+							<a
+								class="link-plain"
+								href="https://github.com/Oceanyx/Chroma"
+								target="_blank"
+								rel="noopener"
+								>View the source</a
+							>
+						</div>
+					</div>
+				</div>
+			</section>
 
-                    <div class="column lg-12 s-intro__content-inner grid-block">
-                        
-                        <div class="s-intro__content-text">
-                            <div class="s-intro__content-pretitle text-pretitle">Hello, I'm Brian</div>
-                            <h1 class="s-intro__content-title">
-                            I craft sleek, high-performance <br>
-                            web experiences.
-                            </h1>
-                        </div> <!-- s-intro__content-text -->
+			<section id="contact" class="band band--dark">
+				<div class="wrap reveal">
+					<h2>Say hi</h2>
+					<p>
+						If you're building something weird, or just want to compare notes on
+						side projects, I'm around.
+					</p>
+					<div class="btn-row">
+						<a
+							class="btn"
+							href="#"
+							id="email-cta"
+							data-user="bchanyx"
+							data-domain="gmail.com"
+							>Email me</a
+						>
+						<a
+							class="icon-link icon-label"
+							href="https://github.com/oceanyx"
+							target="_blank"
+							rel="noopener">
+							<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+								<path
+									d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+							</svg>
+							GitHub
+						</a>
+						<a
+							class="icon-link icon-label"
+							href="https://linkedin.com/in/oceanyx"
+							target="_blank"
+							rel="noopener">
+							<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+								<path
+									d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.137 1.445-2.137 2.939v5.667h-3.554v-11.452h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zm-15.11-13.019c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019h-3.564v-11.452h3.564v11.452zm16.905-20.452h-20.454c-.979 0-1.771.774-1.771 1.729v20.542c0 .956.792 1.729 1.771 1.729h20.451c.978 0 1.778-.773 1.778-1.729v-20.542c0-.955-.8-1.729-1.778-1.729z" />
+							</svg>
+							LinkedIn
+						</a>
+					</div>
+					<p class="foot-note">
+						© 2026 Brian. Built with more coffee than sleep.
+						<img
+							class="visit-badge"
+							src="https://oceanyx.goatcounter.com/counter/home.svg?no-branding=1"
+							alt=""
+							loading="lazy"
+							onerror="this.remove()" />
+					</p>
+				</div>
+			</section>
+		</main>
 
-                        <div class="s-intro__content-media"> 
-                            <div class="s-intro__content-media-inner">                               
-                                <img src="images/intro-bg.jpg" srcset="images/intro-bg.jpg 1x, images/intro-bg@2x.jpg 2x" alt="">
-                                <div class="lines">                               
-                                    <span></span>                                  
-                                </div>
-                            </div>
-                        </div> <!-- s-intro__content-media -->                      
+		<script>
+			// Mild email obfuscation: the address is assembled at click-time
+			// instead of sitting in the page source as a plain mailto: link.
+			document.querySelectorAll("[data-user]").forEach(function (el) {
+				var addr = el.dataset.user + "@" + el.dataset.domain;
+				el.addEventListener("click", function (e) {
+					e.preventDefault();
+					window.location.href = "mailto:" + addr;
+				});
+				el.setAttribute("aria-label", "Email " + addr);
+			});
 
-                        <div class="s-intro__scroll-down">
-                            <a href="#about" class="smoothscroll">
-                                <div class="scroll-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#97b34a" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">&lt;!--!  Atomicons Free 1.00 by @atisalab License - https://atomicons.com/license/ (Icons: CC BY 4.0) Copyright 2021 Atomicons --&gt;<polyline points="7 13 12 18 17 13"></polyline><line x1="12" y1="18" x2="12" y2="6"></line></svg>
-                                </div>
-                                <span>Scroll for more</span>
-                            </a>
-                        </div> <!-- s-intro__scroll-down -->
-                        
-                    </div> <!-- s-intro__content-inner -->
-
-                </div> <!-- s-intro__content -->
-
-            </section> <!-- end s-intro -->
-
-            <!-- about
-            ----------------------------------------------- -->
-            <section id="about" class="s-about target-section">
-
-                <div class="row s-about__content width-sixteen-col">
-                    <div class="column grid-block grid-section-split">
-
-                        <img src="images/geometric_shape.svg" alt="" class="s-about__content-imgbg">
-
-                        <div class="section-header grid-section-split__header">
-                            <div class="text-pretitle">About</div>                           
-                            <h2 class="text-display-title">
-                            Naturally curious.
-                            </h2>                           
-                        </div> <!-- end section-header -->
-
-                        <div class="s-about__content-main grid-section-split__primary">
-                            <p class="attention-getter">
-                                Ever since I was a teenager, I've been drawn to the structures around me — not just how they function, but why they’re organized the way they are. Why do we choose one structure over another? Is it for convenience? Efficiency? Development? Or is it the result of habit, oversight, or some deeper pattern we’ve yet to recognize?
-                            </p>
-
-                            <p class="attention-getter">
-                            
-                            </p>
-
-                            <p class="attention-getter">
-                                That curiosity naturally led me to code — a space where abstract ideas take shape and systems are built from the ground up. As a full-stack developer, I’m drawn to both the architecture and the details: how different layers of technology interact, and how thoughtful design choices ripple through a system. Whether it's building APIs, refining user interfaces, or optimizing infrastructure, I find purpose in making things that are not only functional, but deeply coherent.
-                            </p>
-                        </div> <!-- end s-about__content-main -->
-
-                        <div class="s-about__content-btn grid-section-split__bottom">
-                            <a href="about.html" class="btn btn--stroke u-fullwidth">More About Me</a>
-
-                            <ul class="s-about__social social-list">
-                                <li>
-                                    <a href="https://linkedin.com/in/oceanyx" target="_blank">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);">
-                                            <path d="M20.447 20.452h-3.554v-5.569c0-1.327-.025-3.037-1.849-3.037-1.851 0-2.134 1.445-2.134 2.939v5.667h-3.554V9h3.414v1.561h.049c.476-.9 1.637-1.849 3.368-1.849 3.599 0 4.263 2.368 4.263 5.448v6.292zM5.337 7.433c-1.144 0-2.07-.928-2.07-2.07 0-1.144.926-2.07 2.07-2.07s2.07.926 2.07 2.07c0 1.142-.926 2.07-2.07 2.07zM6.865 20.452H3.809V9h3.056v11.452zM22.225 0H1.771C.792 0 0 .771 0 1.729v20.542C0 23.229.792 24 1.771 24h20.451C23.207 24 24 23.229 24 22.271V1.729C24 .771 23.207 0 22.225 0z"/>
-                                        </svg>
-                                        <span class="u-screen-reader-text">LinkedIn</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://github.com/oceanyx" target="_blank">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);">
-                                            <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.29 3.438 9.772 8.205 11.364.6.113.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.334-1.757-1.334-1.757-1.09-.745.082-.73.082-.73 1.205.084 1.84 1.237 1.84 1.237 1.07 1.834 2.805 1.304 3.492.997.108-.776.418-1.304.76-1.603-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.47-2.38 1.236-3.22-.125-.303-.535-1.522.115-3.176 0 0 1.008-.322 3.3 1.23a11.52 11.52 0 0 1 3-.404c1.02.005 2.045.137 3 .404 2.29-1.553 3.297-1.23 3.297-1.23.652 1.654.242 2.873.12 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.804 5.625-5.475 5.92.43.37.823 1.1.823 2.22 0 1.603-.015 2.896-.015 3.292 0 .32.216.694.825.576C20.565 22.27 24 17.79 24 12.5 24 5.87 18.63.5 12 .5z"/>
-                                        </svg>
-                                        <span class="u-screen-reader-text">GitHub</span>
-                                    </a>
-                                </li>   
-                            </ul> <!-- end s-footer__social -->
-                        </div> <!-- end s-about__content-btn -->
-                    
-                    </div> <!-- content-inner -->
-                </div>
-                
-            </section> <!-- end s-about -->
-
-            <!-- expertise
-            ----------------------------------------------- -->
-            <section id="expertise" class="s-expertise">
-
-                <div class="row s-expertise__content width-sixteen-col">
-                    <div class="column xl-12 grid-block grid-section-split">
-
-                        <div class="section-header grid-section-split__header">
-                            <div class="text-pretitle">Projects</div>                           
-                            <h2 class="text-display-title">
-                            My most recent projects
-                            </h2>     
-                            
-                            <p class="lead">
-                            Here are some of the projects I have worked on recently. Click on any of the projects to get more details!
-                            </p>
-                        </div> <!-- end section-header -->
-
-                        <div class="s-expertise__content-main grid-section-split__primary">
-
-                            <div class="grid-full grid-list-items list-items show-ctr">
-                                
-                                <div class="grid-list-items__item list-items__item">
-                                    <div class="list-items__item-header">
-                                        <h3 class="list-items__item-title">
-                                            <a href="https://rift-md0q.onrender.com" target="_blank" class="project-link">Rift</a>
-                                        </h3>
-                                        <a href="https://github.com/Oceanyx/Rift#" target="_blank" aria-label="GitHub">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);">
-                                                <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.29 3.438 9.772 8.205 11.364.6.113.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.334-1.757-1.334-1.757-1.09-.745.082-.73.082-.73 1.205.084 1.84 1.237 1.84 1.237 1.07 1.834 2.805 1.304 3.492.997.108-.776.418-1.304.76-1.603-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.47-2.38 1.236-3.22-.125-.303-.535-1.522.115-3.176 0 0 1.008-.322 3.3 1.23a11.52 11.52 0 0 1 3-.404c1.02.005 2.045.137 3 .404 2.29-1.553 3.297-1.23 3.297-1.23.652 1.654.242 2.873.12 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.804 5.625-5.475 5.92.43.37.823 1.1.823 2.22 0 1.603-.015 2.896-.015 3.292 0 .32.216.694.825.576C20.565 22.27 24 17.79 24 12.5 24 5.87 18.63.5 12 .5z"/>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                    <div class="list-items__item-text">
-                                        <p>
-                                        This is a project that implements many of the functionalities of the popular messaging app Discord. 
-                                        </p>
-
-                                        <ul class="list-Projects">
-                                            <li>Live Websocket Functionality</li>
-                                            <li>Implements Faker.js to seed fake data</li>
-                                            <li>Utilizes bcrypt to ensure secure user authentication</li>
-                                        </ul>
-                                    </div>
-                                </div> <!-- end list-items__item -->
-                                <div class="grid-list-items__item list-items__item">
-                                    <div class="list-items__item-header">
-                                        <h3 class="list-items__item-title">
-                                            <a href="https://batmanhood-zofv.onrender.com/" target="_blank" class="project-link">
-                                                Batmanhood
-                                            </a>
-                                        </h3>
-                                        <a href="https://github.com/yokozuna753/Batmanhood" target="_blank" aria-label="GitHub">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);">
-                                                <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.29 3.438 9.772 8.205 11.364.6.113.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.334-1.757-1.334-1.757-1.09-.745.082-.73.082-.73 1.205.084 1.84 1.237 1.84 1.237 1.07 1.834 2.805 1.304 3.492.997.108-.776.418-1.304.76-1.603-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.47-2.38 1.236-3.22-.125-.303-.535-1.522.115-3.176 0 0 1.008-.322 3.3 1.23a11.52 11.52 0 0 1 3-.404c1.02.005 2.045.137 3 .404 2.29-1.553 3.297-1.23 3.297-1.23.652 1.654.242 2.873.12 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.804 5.625-5.475 5.92.43.37.823 1.1.823 2.22 0 1.603-.015 2.896-.015 3.292 0 .32.216.694.825.576C20.565 22.27 24 17.79 24 12.5 24 5.87 18.63.5 12 .5z"/>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                
-                                    <div class="list-items__item-text">
-                                        <p>
-                                            This is a collaborative project with 3 other developers to create a stock-based app.
-                                        </p>
-                                
-                                        <ul class="list-Projects">
-                                            <li>Uses Recharts.js to show live graph stock data</li>
-                                            <li>Fetches data from Yahoo Finance API to grab stock data</li>
-                                            <li>Uses Docker to ensure project runs in the same environment on different systems</li>
-                                        </ul>
-                                    </div>
-                                </div> <!-- list-expertise__item -->
-                                <!-- <div class="grid-list-items__item list-items__item">
-                                    <div class="grid-list-items__title list-items__item-header">
-                                        <h3 class="list-items__item-title">Content Marketing</h3>
-                                    </div>
-                                    <div class="grid-list-items__text list-items__item-text">
-                                        <p>
-                                        Eaque velit eligend. iQuibusdam quis autem voluptatibus earum vel ex error ea magni. 
-                                        Rerum quam quos. Aut asperiores sit mollitia. Rem neque et voluptatem eos quia sed eligendi et. 
-                                        Eaque velit eligendi ut magnam. Cumque ducimus laborum doloribus facere maxime vel earum quidem enim suscipit.
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="grid-list-items__item list-items__item">
-                                    <div class="grid-list-items__title list-items__item-header">
-                                        <h3 class="list-items__item-title">Research & Discovery</h3>
-                                    </div>
-                                    <div class="grid-list-items__text list-items__item-text">
-                                        <p>
-                                        Quibusdam quis autem voluptatibus earum vel ex error ea magni. Rerum quam quos. Aut asperiores 
-                                        sit mollitia. Rem neque et voluptatem eos quia sed eligendi et. Eaque velit eligendi ut 
-                                        magnam. Cumque ducimus laborum doloribus facere maxime vel earum quidem enim suscipit.
-                                        </p>
-                                    </div>
-                                </div> -->
-
-                            </div> <!-- grid-list-items -->
-                        </div> <!-- end s-expertise__content-main -->
-
-                        <div class="s-expertise__content-btn grid-section-split__bottom">
-                            <a href="projects.html" class="btn btn--stroke u-fullwidth">View All Projects</a>
-                        </div> <!-- end s-about__content-btn -->
-
-                    </div> <!-- end grid-block-->
-                </div> <!-- end s-expertise__content -->
-
-            </section> <!-- end s-expertise -->
-
-            <!-- clients
-            ----------------------------------------------- -->
-            <section id="clients" class="s-clients">          
-                <div class="row s-clients__content-block width-sixteen-col">
-                  <div class="column xl-12 grid-block grid-section-split">
-                  
-                    <div class="section-header grid-section-split__header">
-                      <div class="text-pretitle">Skills</div>                           
-                      <h2 class="text-display-title">
-                        These are the languages and tools I am familiar with.
-                      </h2>       
-                    </div> <!-- end section-header -->
-                  
-                    <div class="grid-section-split__primary">
-                      <div class="skills-icons">
-                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" title="React" alt="React" />
-                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg" title="Redux" alt="Redux" />
-                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-plain-wordmark.svg" title="CSS3" alt="CSS" />
-                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg" title="HTML5" alt="HTML" />
-                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" title="JavaScript" alt="JavaScript" />
-                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" title="Python" alt="Python" />
-                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/sqlalchemy/sqlalchemy-original.svg" title="SQLAlchemy" alt="SQLAlchemy" />
-                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" title="NodeJS" alt="NodeJS" />
-                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original-wordmark.svg" title="Git" alt="Git" />
-                        <img src="https://camo.githubusercontent.com/eb3ec0757a5960cad27d847a41632df5a69d9cb695bf19dc4be1ad7e60334a2a/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d466c61736b2d3030303030303f7374796c653d666c61742d737175617265266c6f676f3d666c61736b266c6f676f436f6c6f723d7768697465" title="Flask" alt="Flask" />
-                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg" title="PostgreSQL" alt="PostgreSQL" />
-                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/sequelize/sequelize-original.svg" title="Sequelize" alt="Sequelize" />
-                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/sqlite/sqlite-original-wordmark.svg" title="SQLite" alt="SQLite" />
-                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-plain.svg" title="Docker" alt="Docker" />
-                      </div>
-                    </div> <!-- end grid-section-split__primary -->
-                  
-                  </div> <!-- end column -->
-                </div> <!-- end row -->
-              </section> <!-- end s-clients -->
-              
-                          
-
-        </section> <!-- s-content-->
-        
-        <!-- # footer 
-        ================================================== -->
-        <footer class="s-footer">
-            <div class="row s-footer__content">
-                <div class="column xl-6 lg-6 md-12 s-footer__block s-footer__about">                    
-                    <h3>About Brian</h3>
-                    <p>
-                        Hi, I’m Brian – a passionate developer eager to break into the software engineering world! I specialize in JavaScript, React, Python, and Node.js, and I’m constantly building projects to sharpen my skills and explore new technologies. I'm always up for a challenge and love collaborating on creative, impactful solutions.
-                    Let’s connect if you’re into building cool stuff, have an opportunity in tech, or just want to chat about development!
-                    </p>               
-                </div>                
-                <div class="column xl-3 lg-6 md-12 s-footer__block s-footer__site-links">
-                    <h3>Site Links</h3>
-                    <ul class="link-list">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="projects.html">Projects</a></li>
-                        <li><a href="blog.html">Journal</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="column xl-3 lg-6 md-12 tab-12 s-footer__block s-footer__newsletter">
-                    <h3>Journal</h3>
-
-                    <p>
-                        Dive into my journal for fresh perspectives, thought experiments, and a glimpse into how I think.
-                    </p>
-
-                    <div class="subscribe-form">
-                        <a href="blog.html" class="btn btn--primary s-header__contact-btn">Check out my Journal</a>  
-                        <!-- <form id="mc-form" class="mc-form"> -->
-                            <!-- <input type="email" name="EMAIL" id="mce-EMAIL" class="u-fullwidth text-center" placeholder="Your Email Address" title="The domain portion of the email address is invalid (the portion after the @)." pattern="^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*(\.\w{2,})+$" required>
-                            <input type="submit" name="subscribe" value="Subscribe" class="btn btn--primary btn--small u-fullwidth"> -->
-                            <!-- <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_cdb7b577e41181934ed6a6a44_9a91cfe7b3" tabindex="-1" value=""></div> -->
-                            <!-- <div class="mc-status"></div>
-                        </form> -->
-                    </div>
-                </div>
-            </div>    
-            
-            <div class="row s-footer__bottom">
-                <div class="column xl-6 lg-12">
-                    <ul class="s-footer__social social-list">
-                        <li>
-                            <a href="https://linkedin.com/in/oceanyx" target="_blank">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);">
-                                    <path d="M20.447 20.452h-3.554v-5.569c0-1.327-.025-3.037-1.849-3.037-1.851 0-2.134 1.445-2.134 2.939v5.667h-3.554V9h3.414v1.561h.049c.476-.9 1.637-1.849 3.368-1.849 3.599 0 4.263 2.368 4.263 5.448v6.292zM5.337 7.433c-1.144 0-2.07-.928-2.07-2.07 0-1.144.926-2.07 2.07-2.07s2.07.926 2.07 2.07c0 1.142-.926 2.07-2.07 2.07zM6.865 20.452H3.809V9h3.056v11.452zM22.225 0H1.771C.792 0 0 .771 0 1.729v20.542C0 23.229.792 24 1.771 24h20.451C23.207 24 24 23.229 24 22.271V1.729C24 .771 23.207 0 22.225 0z"/>
-                                </svg>
-                                <span class="u-screen-reader-text">LinkedIn</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/oceanyx" target="_blank">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);">
-                                    <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.29 3.438 9.772 8.205 11.364.6.113.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.334-1.757-1.334-1.757-1.09-.745.082-.73.082-.73 1.205.084 1.84 1.237 1.84 1.237 1.07 1.834 2.805 1.304 3.492.997.108-.776.418-1.304.76-1.603-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.47-2.38 1.236-3.22-.125-.303-.535-1.522.115-3.176 0 0 1.008-.322 3.3 1.23a11.52 11.52 0 0 1 3-.404c1.02.005 2.045.137 3 .404 2.29-1.553 3.297-1.23 3.297-1.23.652 1.654.242 2.873.12 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.804 5.625-5.475 5.92.43.37.823 1.1.823 2.22 0 1.603-.015 2.896-.015 3.292 0 .32.216.694.825.576C20.565 22.27 24 17.79 24 12.5 24 5.87 18.63.5 12 .5z"/>
-                                </svg>
-                                <span class="u-screen-reader-text">GitHub</span>
-                            </a>
-                        </li>                       
-                    </ul> <!-- end s-footer__social -->
-                </div>
-                <div class="column xl-6 lg-12">
-                    <p class="ss-copyright">
-                        <span>© Copyright Brian 2025. All rights reserved.</span> 
-                    </p>
-                </div>
-
-                <div class="ss-go-top">
-                    <a class="smoothscroll" title="Back to Top" href="#top">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">&lt;!--!  Atomicons Free 1.00 by @atisalab License - https://atomicons.com/license/ (Icons: CC BY 4.0) Copyright 2021 Atomicons --&gt;<polyline points="17 11 12 6 7 11"></polyline><line x1="12" y1="18" x2="12" y2="6"></line></svg>
-                    </a>
-                </div> <!-- end ss-go-top -->
-            </div>
-            
-        </footer> <!-- end s-footer -->
-
-    </div>  <!-- end page-wrap -->
-
-    <!-- Java Script
-    ================================================== -->
-    <script src="js/plugins.js"></script>
-    <script src="js/main.js"> </script>
-
-</body>
+			// Scroll-triggered reveal for section blocks
+			var revealEls = document.querySelectorAll(".reveal");
+			if ("IntersectionObserver" in window) {
+				var io = new IntersectionObserver(
+					function (entries) {
+						entries.forEach(function (entry) {
+							if (entry.isIntersecting) {
+								entry.target.classList.add("is-visible");
+								io.unobserve(entry.target);
+							}
+						});
+					},
+					{ threshold: 0.15 },
+				);
+				revealEls.forEach(function (el) {
+					io.observe(el);
+				});
+			} else {
+				revealEls.forEach(function (el) {
+					el.classList.add("is-visible");
+				});
+			}
+		</script>
+	</body>
 </html>
