@@ -1,0 +1,373 @@
+/* ===== Oceanyx shared design system ===== */
+:root {
+	--sky-top: #070a1a;
+	--sky-bottom: #0d1c33;
+	--depth-2: #1e4468; /* shallow, moonlit — used by whichever section sits 2nd */
+	--depth-3: #0b1930; /* twilight — used by whichever section sits 3rd */
+	--contact-bg: #05040f; /* abyss */
+
+	--text: #e8edf6;
+	--text-muted: #a9b7cc;
+	--hairline: rgba(255, 255, 255, 0.1);
+
+	--moon: #eceff7;
+	--moon-glow: rgba(236, 239, 247, 0.3);
+	--teal: #35e0c6;
+	--cyan: #7fd1f5;
+	--violet: #b98bf0;
+
+	--wrap: 1400px;
+	--gutter: clamp(24px, 6vw, 64px);
+}
+
+* {
+	box-sizing: border-box;
+}
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	/* The night sky stays flat and solid — no gradient shift at all — until
+	   the surface crossing just past the hero, where the water gradient
+	   (shallow → twilight → abyss) takes over in one continuous run. Still a
+	   single gradient object, so nothing ever hard-cuts at a section edge. */
+	background: linear-gradient(
+		180deg,
+		#070a1a 0%,
+		#070a1a 20%,
+		#12294a 26%,
+		#1e4468 34%,
+		#163454 55%,
+		#0b1930 72%,
+		#081222 88%,
+		#010108 100%
+	);
+	color: var(--text);
+	font-family:
+		"Inter",
+		-apple-system,
+		BlinkMacSystemFont,
+		sans-serif;
+	font-size: 17px;
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+.wordmark {
+	font-family: "Space Grotesk", sans-serif;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	margin: 0;
+	color: var(--text);
+}
+
+a {
+	color: var(--text);
+	text-decoration-color: var(--hairline);
+	text-underline-offset: 3px;
+	text-decoration-thickness: 1.5px;
+}
+a:hover {
+	text-decoration-color: var(--teal);
+}
+a:focus-visible,
+button:focus-visible {
+	outline: 2px solid var(--teal);
+	outline-offset: 3px;
+}
+
+.wrap {
+	max-width: var(--wrap);
+	margin: 0 auto;
+	padding: 0 var(--gutter);
+	position: relative;
+	z-index: 1;
+}
+
+/* NAV — a few faint stars baked in so it always reads as "part of the sky" */
+header {
+	position: sticky;
+	top: 0;
+	background-color: rgba(4, 6, 14, 0.82);
+	background-image:
+		radial-gradient(1px 1px at 12% 35%, rgba(255, 255, 255, 0.65), transparent),
+		radial-gradient(1px 1px at 28% 60%, rgba(255, 255, 255, 0.4), transparent),
+		radial-gradient(
+			1.3px 1.3px at 52% 30%,
+			rgba(255, 255, 255, 0.55),
+			transparent
+		),
+		radial-gradient(1px 1px at 74% 55%, rgba(255, 255, 255, 0.4), transparent),
+		radial-gradient(1px 1px at 91% 35%, rgba(255, 255, 255, 0.5), transparent);
+	background-repeat: no-repeat;
+	backdrop-filter: blur(8px);
+	border-bottom: 1px solid var(--hairline);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+	z-index: 20;
+}
+.nav-inner {
+	max-width: var(--wrap);
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 16px var(--gutter);
+}
+.wordmark {
+	font-size: 1.1rem;
+	text-decoration: none;
+}
+.nav-links {
+	display: flex;
+	gap: 22px;
+	align-items: center;
+	font-size: 0.95rem;
+}
+.nav-links a {
+	text-decoration: none;
+	color: var(--text-muted);
+}
+.nav-links a:hover {
+	color: var(--text);
+	text-decoration: underline;
+}
+.icon-link {
+	display: inline-flex;
+	align-items: center;
+	color: var(--text-muted);
+	text-decoration: none !important;
+}
+.icon-link:hover {
+	color: var(--teal);
+}
+.icon-link svg {
+	width: 20px;
+	height: 20px;
+	display: block;
+}
+.icon-label {
+	gap: 8px;
+}
+
+/* SECTION LABEL */
+.section-label {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 26px;
+}
+.chip {
+	width: 12px;
+	height: 12px;
+	border-radius: 4px;
+	flex: none;
+}
+.chip--teal {
+	background: var(--teal);
+}
+.chip--cyan {
+	background: var(--cyan);
+}
+.chip--violet {
+	background: var(--violet);
+}
+
+/* BUTTONS */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	background: var(--teal);
+	color: #062018;
+	font-weight: 600;
+	text-decoration: none;
+	padding: 12px 22px;
+	border-radius: 8px;
+	font-size: 0.95rem;
+	border: none;
+	cursor: pointer;
+}
+.btn svg {
+	width: 18px;
+	height: 18px;
+}
+.btn:hover {
+	text-decoration: none;
+	background: #57ead4;
+}
+.btn-row {
+	display: flex;
+	gap: 14px;
+	flex-wrap: wrap;
+	align-items: center;
+}
+.btn-secondary {
+	background: rgba(255, 255, 255, 0.08);
+	color: var(--text);
+	border: 1px solid var(--hairline);
+}
+.btn-secondary:hover {
+	background: rgba(255, 255, 255, 0.14);
+}
+
+/* TAGS / BADGE */
+.tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+.tag {
+	font-family: "IBM Plex Mono", monospace;
+	font-size: 0.78rem;
+	padding: 5px 10px;
+	border-radius: 6px;
+}
+.tag:nth-child(3n + 1) {
+	background: rgba(53, 224, 198, 0.16);
+	color: var(--teal);
+}
+.tag:nth-child(3n + 2) {
+	background: rgba(127, 209, 245, 0.16);
+	color: var(--cyan);
+}
+.tag:nth-child(3n) {
+	background: rgba(185, 139, 240, 0.16);
+	color: var(--violet);
+}
+.badge {
+	font-size: 0.75rem;
+	font-weight: 600;
+	background: rgba(53, 224, 198, 0.16);
+	color: var(--teal);
+	padding: 3px 10px;
+	border-radius: 100px;
+}
+
+/* EXTERNAL / FORWARD LINK ICON */
+.ext-icon {
+	width: 15px;
+	height: 15px;
+	opacity: 0.75;
+	transition: transform 0.2s ease;
+	flex: none;
+}
+a:hover .ext-icon {
+	transform: translate(2px, -2px);
+}
+
+/* WAVE DIVIDERS — thin drawn current-lines, not filled blocks, so they never
+   interrupt the continuous body gradient behind them. The surface crossing
+   (hero → projects) uses a bigger, brighter variant defined per-page. */
+.wave {
+	display: block;
+	line-height: 0;
+	width: 100%;
+	height: 64px;
+	flex: none;
+}
+.wave svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+/* DEPTH RAIL — fixed scroll-position indicator, desktop only. Doubles as
+   in-page navigation (each tick is a real anchor link). */
+.depth-rail {
+	position: fixed;
+	right: 30px;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 15;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 30px;
+}
+.depth-rail::before {
+	content: "";
+	position: absolute;
+	top: -6px;
+	bottom: -6px;
+	right: 3px;
+	width: 1px;
+	background: rgba(255, 255, 255, 0.14);
+}
+.depth-tick {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	text-decoration: none !important;
+	color: var(--text-muted);
+}
+.depth-tick::after {
+	content: "";
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.28);
+	transition:
+		background 0.4s ease,
+		box-shadow 0.4s ease,
+		transform 0.4s ease;
+}
+.depth-tick span {
+	font-family: "IBM Plex Mono", monospace;
+	font-size: 0.7rem;
+	opacity: 0;
+	transform: translateX(4px);
+	transition:
+		opacity 0.3s ease,
+		transform 0.3s ease;
+	white-space: nowrap;
+}
+.depth-tick:hover span {
+	opacity: 0.7;
+	transform: none;
+}
+.depth-tick.is-active::after {
+	background: var(--cyan);
+	box-shadow: 0 0 8px 2px rgba(127, 209, 245, 0.6);
+	transform: scale(1.3);
+}
+.depth-tick.is-active span {
+	opacity: 0.9;
+	color: var(--text);
+	transform: none;
+}
+@media (max-width: 1150px) {
+	.depth-rail {
+		display: none;
+	}
+}
+
+/* SCROLL REVEAL */
+.reveal {
+	opacity: 0;
+	transform: translateY(18px);
+	transition:
+		opacity 0.6s ease,
+		transform 0.6s ease;
+}
+.reveal.is-visible {
+	opacity: 1;
+	transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.reveal {
+		transition: none;
+		opacity: 1;
+		transform: none;
+	}
+	.depth-tick::after,
+	.depth-tick span {
+		transition: none;
+	}
+}

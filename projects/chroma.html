@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Chroma — Case Study | Brian</title>
+		<meta
+			name="description"
+			content="How and why Chroma works — a local-first tool for mapping how you make sense of your own experiences." />
+		<link
+			rel="icon"
+			type="image/svg+xml"
+			href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2305070f'/%3E%3Ccircle cx='58' cy='44' r='27' fill='%23ECEFF7'/%3E%3Ccircle cx='47' cy='36' r='27' fill='%2305070f'/%3E%3Ccircle cx='76' cy='70' r='3.4' fill='%237FD1F5'/%3E%3C/svg%3E" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"
+			rel="stylesheet" />
+		<link rel="stylesheet" href="../styles.css" />
+		<style>
+			body {
+				/* Static echo of the homepage's twilight→abyss stops — this page
+				   isn't part of the scroll narrative, so it doesn't need to move,
+				   just stay in the same world. */
+				background: linear-gradient(
+					180deg,
+					#0b1930 0%,
+					#05040f 55%,
+					#010108 100%
+				);
+			}
+			.page {
+				padding: 44px 0 90px;
+			}
+			.back-link {
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				font-size: 0.9rem;
+				color: var(--text-muted);
+				text-decoration: none;
+				margin-bottom: 32px;
+			}
+			.back-link:hover {
+				color: var(--text);
+			}
+			.back-link svg {
+				width: 16px;
+				height: 16px;
+			}
+
+			/* Sidebar + reading column, centered as one unit on the page instead
+			   of a single text column hugging the left edge of the 1400px wrap. */
+			.case-grid {
+				display: grid;
+				grid-template-columns: 190px minmax(0, 720px);
+				gap: 64px;
+				justify-content: center;
+				align-items: start;
+			}
+			.case-rail {
+				position: sticky;
+				top: 100px;
+				display: flex;
+				flex-direction: column;
+				gap: 20px;
+			}
+			.case-tick {
+				font-family: "IBM Plex Mono", monospace;
+				font-size: 0.76rem;
+				line-height: 1.4;
+				color: var(--text-muted);
+				text-decoration: none !important;
+				border-left: 2px solid var(--hairline);
+				padding-left: 14px;
+				transition:
+					color 0.25s ease,
+					border-color 0.25s ease;
+			}
+			.case-tick:hover {
+				color: var(--text);
+			}
+			.case-tick.is-active {
+				color: var(--text);
+				border-left-color: var(--cyan);
+			}
+			.case-content {
+				min-width: 0;
+			}
+
+			@media (max-width: 900px) {
+				.case-grid {
+					grid-template-columns: minmax(0, 640px);
+					justify-content: center;
+				}
+				.case-rail {
+					display: none;
+				}
+			}
+
+			.banner {
+				padding-bottom: 32px;
+				border-bottom: 1px solid var(--hairline);
+				margin-bottom: 40px;
+			}
+			.banner .badge {
+				margin-left: 10px;
+				vertical-align: middle;
+			}
+			.banner h1 {
+				font-size: clamp(2.2rem, 5vw, 3rem);
+				display: inline-block;
+			}
+			.banner .tagline {
+				color: var(--text-muted);
+				font-size: 1.15rem;
+				margin-top: 14px;
+				max-width: 60ch;
+			}
+			.banner .btn-row {
+				margin-top: 24px;
+			}
+
+			article section {
+				margin: 0 0 48px;
+			}
+			article h2 {
+				font-size: 1.4rem;
+				margin-bottom: 16px;
+			}
+			article p {
+				color: var(--text-muted);
+				margin: 0 0 14px;
+			}
+			article p:last-child {
+				margin-bottom: 0;
+			}
+
+			/* Custom bullets, flex-aligned to the first line of text, so the
+			   marker sits in the same spot relative to the text every time
+			   instead of relying on the browser's default ::marker box (which
+			   renders inconsistently against custom fonts). */
+			article ul {
+				list-style: none;
+				padding-left: 0;
+				margin: 0;
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+			}
+			article li {
+				display: flex;
+				align-items: flex-start;
+				gap: 10px;
+				margin: 0;
+				color: var(--text-muted);
+			}
+			article li::before {
+				content: "";
+				flex: none;
+				width: 6px;
+				height: 6px;
+				margin-top: 8px;
+				border-radius: 50%;
+				background: var(--cyan);
+				opacity: 0.75;
+			}
+
+			.mechanic-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+				gap: 16px;
+				margin-top: 20px;
+			}
+			.mechanic-card {
+				background: rgba(255, 255, 255, 0.04);
+				border: 1px solid var(--hairline);
+				border-radius: 10px;
+				padding: 18px;
+			}
+			.mechanic-card h3 {
+				font-size: 1rem;
+				margin-bottom: 8px;
+			}
+			.mechanic-card p {
+				font-size: 0.92rem;
+				margin: 0;
+			}
+
+			.gallery {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+				gap: 16px;
+				margin-top: 20px;
+			}
+			.gallery-slot {
+				aspect-ratio: 16 / 10;
+				border-radius: 10px;
+				border: 1px dashed var(--hairline);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				text-align: center;
+				color: var(--text-muted);
+				font-size: 0.85rem;
+				padding: 16px;
+				background: rgba(255, 255, 255, 0.02);
+			}
+
+			.status-columns {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 32px;
+				margin-top: 20px;
+			}
+			.status-columns h3 {
+				font-size: 0.95rem;
+				text-transform: none;
+				margin-bottom: 12px;
+			}
+
+			.closing {
+				border-top: 1px solid var(--hairline);
+				padding-top: 36px;
+			}
+			.closing .btn-row {
+				margin-top: 20px;
+			}
+
+			@media (max-width: 640px) {
+				.status-columns {
+					grid-template-columns: 1fr;
+					gap: 24px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<nav class="nav-inner">
+				<a class="wordmark" href="../index.html">brian</a>
+				<div class="nav-links">
+					<a href="../index.html#projects">Projects</a>
+					<a href="../index.html#about">About</a>
+					<a href="../index.html#contact">Contact</a>
+					<a
+						class="icon-link"
+						href="https://github.com/oceanyx"
+						target="_blank"
+						rel="noopener"
+						aria-label="GitHub">
+						<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+							<path
+								d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+						</svg>
+					</a>
+				</div>
+			</nav>
+		</header>
+
+		<main class="wrap page">
+			<div class="case-grid">
+				<nav class="case-rail" aria-label="Case study sections">
+					<a class="case-tick" data-target="why" href="#why"
+						><span>Why I built it</span></a
+					>
+					<a class="case-tick" data-target="how" href="#how"
+						><span>How it works</span></a
+					>
+					<a class="case-tick" data-target="shots" href="#shots"
+						><span>Screenshots</span></a
+					>
+					<a class="case-tick" data-target="status" href="#status"
+						><span>Where it stands</span></a
+					>
+					<a class="case-tick" data-target="privacy" href="#privacy"
+						><span>Privacy</span></a
+					>
+				</nav>
+
+				<div class="case-content">
+					<a class="back-link" href="../index.html#projects">
+						<svg
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true">
+							<path d="M19 12H5" />
+							<path d="M11 18l-6-6 6-6" />
+						</svg>
+						Back to Brian's site
+					</a>
+
+					<div class="banner">
+						<h1>Chroma</h1>
+						<span class="badge">Live</span>
+						<p class="tagline">
+							A local-first tool for mapping how you make sense of your own
+							experiences — treating each thing you notice as a small planet,
+							and your reflections on it as moons in orbit.
+						</p>
+						<div class="btn-row">
+							<a
+								class="btn"
+								href="https://oceanyx.github.io/Chroma/"
+								target="_blank"
+								rel="noopener">
+								Try Chroma
+								<svg
+									class="ext-icon"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true">
+									<path d="M7 17L17 7" />
+									<path d="M8 7h9v9" />
+								</svg>
+							</a>
+							<a
+								class="btn btn-secondary"
+								href="https://github.com/Oceanyx/Chroma"
+								target="_blank"
+								rel="noopener"
+								>View source on GitHub</a
+							>
+						</div>
+					</div>
+
+					<article>
+						<section id="why">
+							<div class="section-label">
+								<span class="chip chip--teal"></span>
+								<h2>Why I built it</h2>
+							</div>
+							<p>
+								Perception is noticeably fickle — the way something felt in the
+								moment and what was actually true often don't match, and that
+								gap is easy to miss when reflections stay scattered across a
+								notes app or your own memory. Chroma started as an attempt to
+								make that gap visible.
+							</p>
+							<p>
+								The goal isn't just journaling for its own sake. It's giving
+								people a way to notice not only <em>what</em> they conclude
+								about their own thoughts and behavior, but the mechanism behind
+								how they got there — and to let real patterns surface across
+								many small reflections instead of staying invisible.
+							</p>
+						</section>
+
+						<section id="how">
+							<div class="section-label">
+								<span class="chip chip--cyan"></span>
+								<h2>How it works</h2>
+							</div>
+							<p>
+								Every observation, action, or intention becomes a node — a
+								"planet" — on an infinite pan-and-zoom canvas. You attach
+								reflections to it along up to four dimensions, shown as moons
+								orbiting the planet:
+							</p>
+							<div class="mechanic-grid">
+								<div class="mechanic-card">
+									<h3>Felt</h3>
+									<p>What it felt like in the moment — open from the start.</p>
+								</div>
+								<div class="mechanic-card">
+									<h3>Verifiable</h3>
+									<p>
+										What was actually, externally true — also open from the
+										start.
+									</p>
+								</div>
+								<div class="mechanic-card">
+									<h3>Behavioral</h3>
+									<p>
+										What you did. Unlocks after 5 total reflections —
+										intentional pacing, not a bug.
+									</p>
+								</div>
+								<div class="mechanic-card">
+									<h3>Framing</h3>
+									<p>
+										What pattern or frame it fits. Unlocks after 15 reflections.
+									</p>
+								</div>
+							</div>
+							<p style="margin-top: 20px">
+								Planets can be grouped into constellations, and linked with
+								typed relationships —
+								<em
+									>followed, caused, triggered, enabled, contradicts,
+									resolved</em
+								>
+								— or simply marked as being in tension or in support of one
+								another. Individual reflections can also be marked as supporting
+								or contradicting each other directly.
+							</p>
+						</section>
+
+						<section id="shots">
+							<div class="section-label">
+								<span class="chip chip--violet"></span>
+								<h2>Screenshots</h2>
+							</div>
+							<p>
+								Coming soon — I'll drop real screenshots of the canvas in here
+								once I've captured a good set.
+							</p>
+							<div class="gallery">
+								<div class="gallery-slot">Screenshot — the canvas view</div>
+								<div class="gallery-slot">Screenshot — a reflection panel</div>
+								<div class="gallery-slot">Screenshot — a constellation</div>
+							</div>
+						</section>
+
+						<section id="status">
+							<div class="section-label">
+								<span class="chip chip--teal"></span>
+								<h2>Where it stands</h2>
+							</div>
+							<p>
+								The core loop — create an observation, reflect on it across
+								dimensions, connect it to others — works today. It's an early
+								but genuinely usable tool, not a mockup.
+							</p>
+							<div class="status-columns">
+								<div>
+									<h3>Working now</h3>
+									<ul>
+										<li>
+											Observation / Action / Intention nodes on an infinite
+											canvas
+										</li>
+										<li>Reflections across all four dimensions</li>
+										<li>Tension &amp; support marking</li>
+										<li>Constellations and typed relationships</li>
+										<li>JSON export / import</li>
+									</ul>
+								</div>
+								<div>
+									<h3>Not built yet — on purpose</h3>
+									<ul>
+										<li>Accounts, sign-in, or cross-device sync</li>
+										<li>Voice capture / dictation</li>
+										<li>Search and filtering</li>
+										<li>A visible settings panel</li>
+										<li>Undo/redo, fuller keyboard shortcuts</li>
+									</ul>
+								</div>
+							</div>
+							<p style="margin-top: 24px">
+								These are deliberately out of scope for now — the goal is to
+								test whether the core idea holds up before the surface area
+								grows.
+							</p>
+						</section>
+
+						<section id="privacy">
+							<div class="section-label">
+								<span class="chip chip--cyan"></span>
+								<h2>Privacy</h2>
+							</div>
+							<p>
+								Chroma makes no network requests of any kind. Everything you
+								create lives in your browser's IndexedDB and never leaves your
+								device — there's no account system and no server, because
+								there's nowhere for the data to go. Clearing your browser's site
+								data will delete it, so use Export if you want a backup.
+							</p>
+						</section>
+
+						<section class="closing">
+							<h2>Try it yourself</h2>
+							<p>
+								It's free, runs entirely in your browser, and takes a minute to
+								get a feel for.
+							</p>
+							<div class="btn-row">
+								<a
+									class="btn"
+									href="https://oceanyx.github.io/Chroma/"
+									target="_blank"
+									rel="noopener"
+									>Try Chroma</a
+								>
+								<a
+									class="btn btn-secondary"
+									href="https://github.com/Oceanyx/Chroma"
+									target="_blank"
+									rel="noopener"
+									>View source</a
+								>
+								<a class="btn btn-secondary" href="../index.html#projects"
+									>Back to the site</a
+								>
+							</div>
+						</section>
+					</article>
+				</div>
+			</div>
+		</main>
+
+		<script>
+			var caseTicks = document.querySelectorAll(".case-tick");
+			var caseTargets = ["why", "how", "shots", "status", "privacy"]
+				.map(function (id) {
+					return document.getElementById(id);
+				})
+				.filter(Boolean);
+
+			if (
+				caseTicks.length &&
+				caseTargets.length &&
+				"IntersectionObserver" in window
+			) {
+				var caseObserver = new IntersectionObserver(
+					function (entries) {
+						entries.forEach(function (entry) {
+							if (entry.isIntersecting) {
+								var id = entry.target.id;
+								caseTicks.forEach(function (tick) {
+									tick.classList.toggle(
+										"is-active",
+										tick.dataset.target === id,
+									);
+								});
+							}
+						});
+					},
+					{ threshold: 0.3, rootMargin: "-100px 0px -55% 0px" },
+				);
+				caseTargets.forEach(function (el) {
+					caseObserver.observe(el);
+				});
+			}
+		</script>
+	</body>
+</html>

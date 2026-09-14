@@ -3,183 +3,40 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Brian — Full-stack developer</title>
+		<title>Brian — Oceanyx</title>
 		<meta
 			name="description"
-			content="Brian is a full-stack developer building Chroma, a local-first tool for mapping how you make sense of your own experiences." />
+			content="Brian (Oceanyx) — building Chroma and Rift. This is where those things end up." />
+		<link
+			rel="icon"
+			type="image/svg+xml"
+			href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2305070f'/%3E%3Ccircle cx='58' cy='44' r='27' fill='%23ECEFF7'/%3E%3Ccircle cx='47' cy='36' r='27' fill='%2305070f'/%3E%3Ccircle cx='76' cy='70' r='3.4' fill='%237FD1F5'/%3E%3C/svg%3E" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"
 			rel="stylesheet" />
+		<link rel="stylesheet" href="styles.css" />
 		<style>
-			:root {
-				--bg: #eef1f1;
-				--surface: #fdfdfb;
-				--ink: #1b1f27;
-				--ink-text: #e9eae6;
-				--ink-muted: #a7adb8;
-				--text: #1e2229;
-				--text-muted: #565d66;
-				--border: #d8dcdc;
-				--coral: #ff5d3a;
-				--coral-soft: #ffe4db;
-				--teal: #2ec4b6;
-				--teal-soft: #daf4f1;
-				--gold: #ffc857;
-				--wrap: 1040px;
-				--wrap-nav: 1400px;
-			}
-
-			* {
-				box-sizing: border-box;
-			}
-			html {
-				scroll-behavior: smooth;
-			}
-
-			body {
-				margin: 0;
-				background: var(--bg);
-				color: var(--text);
-				font-family:
-					"Inter",
-					-apple-system,
-					BlinkMacSystemFont,
-					sans-serif;
-				font-size: 17px;
-				line-height: 1.6;
-				-webkit-font-smoothing: antialiased;
-			}
-
-			h1,
-			h2,
-			.wordmark {
-				font-family: "Space Grotesk", sans-serif;
-				font-weight: 600;
-				letter-spacing: -0.01em;
-				margin: 0;
-			}
-
-			a {
-				color: var(--text);
-				text-decoration-color: var(--border);
-				text-underline-offset: 3px;
-				text-decoration-thickness: 1.5px;
-			}
-			a:hover {
-				text-decoration-color: var(--coral);
-			}
-			a:focus-visible,
-			button:focus-visible {
-				outline: 2px solid var(--coral);
-				outline-offset: 3px;
-			}
-
-			.wrap {
-				max-width: var(--wrap);
-				margin: 0 auto;
-				padding: 0 32px;
-			}
-
-			/* NAV */
-			header {
-				position: sticky;
-				top: 0;
-				background: rgba(238, 241, 241, 0.85);
-				backdrop-filter: blur(6px);
-				border-bottom: 1px solid var(--border);
-				z-index: 10;
-			}
-			.nav-inner {
-				max-width: var(--wrap-nav);
-				margin: 0 auto;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				padding: 18px 48px;
-			}
-			.wordmark {
-				font-size: 1.1rem;
-				text-decoration: none;
-			}
-			.nav-links {
-				display: flex;
-				gap: 22px;
-				align-items: center;
-				font-size: 0.95rem;
-			}
-			.nav-links a {
-				text-decoration: none;
-				color: var(--text-muted);
-			}
-			.nav-links a:hover {
-				color: var(--text);
-				text-decoration: underline;
-			}
-			.icon-link {
-				display: inline-flex;
-				color: var(--text-muted);
-				text-decoration: none !important;
-			}
-			.icon-link:hover {
-				color: var(--coral);
-			}
-			.icon-link svg {
-				width: 20px;
-				height: 20px;
-				display: block;
-			}
-			.band--dark .icon-link {
-				color: var(--ink-muted);
-			}
-			.band--dark .icon-link:hover {
-				color: var(--coral);
-			}
-			.icon-label {
-				display: inline-flex;
-				align-items: center;
-				gap: 8px;
-			}
-
-			/* BANDS (full-bleed section backgrounds) */
-			.band {
-				border-top: 1px solid var(--border);
-				padding: 64px 0;
-			}
-			.band--surface {
-				background: var(--surface);
-			}
-			.band--dark {
-				background: var(--ink);
-				color: var(--ink-text);
-				border-top: none;
-				padding: 88px 0 40px;
-			}
-			.band--dark h2 {
-				color: #fff;
-			}
-			.band--dark p {
-				color: var(--ink-muted);
-			}
-			.band--dark a {
-				color: var(--ink-text);
-				text-decoration-color: rgba(255, 255, 255, 0.25);
-			}
-			.band--dark a:hover {
-				text-decoration-color: var(--coral);
-			}
-
-			/* HERO */
+			section.zone,
 			.hero-section {
-				padding: 72px 0 64px;
+				position: relative;
+				overflow: hidden;
+			}
+
+			.hero-section {
+				min-height: calc(100vh - 65px);
+				display: flex;
+				flex-direction: column;
 			}
 			.hero {
+				flex: 1;
+				position: relative;
+				z-index: 1;
 				display: grid;
-				grid-template-columns: 1.2fr 1fr;
+				grid-template-columns: 1.35fr 1fr;
 				gap: 40px;
 				align-items: center;
-				min-height: 0;
 			}
 			.hero h1 {
 				font-size: clamp(2.4rem, 4.4vw, 3.4rem);
@@ -191,32 +48,8 @@
 				font-size: 1.08rem;
 				max-width: 46ch;
 			}
-
-			.btn {
-				display: inline-block;
-				background: var(--coral);
-				color: #1a0e09;
-				font-weight: 600;
-				text-decoration: none;
-				padding: 12px 22px;
-				border-radius: 8px;
-				font-size: 0.95rem;
-				border: none;
-				cursor: pointer;
-			}
-			.btn:hover {
-				text-decoration: none;
-				background: #ff4c25;
-			}
-			.btn-row {
-				display: flex;
-				gap: 14px;
-				flex-wrap: wrap;
-				align-items: center;
+			.hero .btn-row {
 				margin-top: 28px;
-			}
-			.link-plain {
-				font-size: 0.95rem;
 			}
 
 			@keyframes fadeUp {
@@ -242,68 +75,100 @@
 				animation: fadeUp 0.9s ease 0.1s both;
 			}
 
-			/* ORBIT GRAPHIC */
 			.orbit-container {
 				display: flex;
 				justify-content: center;
+				position: relative;
+				z-index: 1;
 			}
 			.orbit {
 				position: relative;
-				width: 300px;
-				height: 300px;
+				width: 320px;
+				height: 320px;
 			}
-			.planet {
+			.moon-body {
 				position: absolute;
 				top: 50%;
 				left: 50%;
-				width: 50px;
-				height: 50px;
-				margin: -25px 0 0 -25px;
+				width: 56px;
+				height: 56px;
+				margin: -28px 0 0 -28px;
 				border-radius: 50%;
-				background: var(--text);
+				background: radial-gradient(
+					circle at 35% 32%,
+					#ffffff,
+					var(--moon) 55%,
+					#c9d2e6 100%
+				);
+				box-shadow: 0 0 34px 6px var(--moon-glow);
+			}
+			.crater {
+				position: absolute;
+				border-radius: 50%;
+				background: rgba(30, 40, 60, 0.14);
+			}
+			.crater.c1 {
+				width: 12px;
+				height: 12px;
+				top: 14px;
+				left: 30px;
+			}
+			.crater.c2 {
+				width: 7px;
+				height: 7px;
+				top: 32px;
+				left: 14px;
 			}
 			.ring {
 				position: absolute;
 				top: 50%;
 				left: 50%;
-				border: 1.5px dashed var(--border);
+				border: 1px solid rgba(255, 255, 255, 0.1);
 				border-radius: 50%;
 				transform: translate(-50%, -50%);
 			}
 			.ring.r1 {
-				width: 300px;
-				height: 300px;
-				animation: spin 18s linear infinite;
+				width: 320px;
+				height: 320px;
+				animation: spin 20s linear infinite;
 			}
 			.ring.r2 {
-				width: 206px;
-				height: 206px;
-				animation: spin 12s linear infinite reverse;
+				width: 220px;
+				height: 220px;
+				animation: spin 13s linear infinite reverse;
 			}
 			.ring.r3 {
-				width: 122px;
-				height: 122px;
-				animation: spin 7s linear infinite;
+				width: 130px;
+				height: 130px;
+				animation: spin 8s linear infinite;
 			}
-			.moon {
+			.satellite {
 				position: absolute;
-				top: -6px;
+				top: -4px;
 				left: 50%;
-				width: 13px;
-				height: 13px;
-				margin-left: -6.5px;
 				border-radius: 50%;
 			}
-			.r1 .moon {
-				background: var(--teal);
+			.r1 .satellite {
+				width: 6px;
+				height: 6px;
+				margin-left: -3px;
+				background: #fff;
+				box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.6);
 			}
-			.r2 .moon {
-				background: var(--gold);
+			.r2 .satellite {
+				width: 5px;
+				height: 5px;
+				margin-left: -2.5px;
+				background: #f4e9c9;
+				box-shadow: 0 0 5px 1px rgba(244, 233, 201, 0.5);
 			}
-			.r3 .moon {
-				background: var(--coral);
+			.r3 .satellite {
+				width: 9px;
+				height: 9px;
+				margin-left: -4.5px;
+				background: var(--cyan);
+				box-shadow: 0 0 10px 2px rgba(127, 209, 245, 0.55);
 			}
-
 			@keyframes spin {
 				from {
 					transform: translate(-50%, -50%) rotate(0deg);
@@ -313,93 +178,197 @@
 				}
 			}
 
-			@media (prefers-reduced-motion: reduce) {
-				.ring {
-					animation: none;
-				}
-				.hero h1,
-				.hero p,
-				.hero .btn-row,
-				.orbit-container {
-					animation: none;
-				}
-				.reveal {
-					transition: none;
-					opacity: 1;
-					transform: none;
-				}
-			}
-
-			/* SCROLL REVEAL */
-			.reveal {
-				opacity: 0;
-				transform: translateY(18px);
-				transition:
-					opacity 0.6s ease,
-					transform 0.6s ease;
-			}
-			.reveal.is-visible {
-				opacity: 1;
-				transform: none;
-			}
-
-			/* SECTIONS */
-			.band h2 {
-				font-size: 1.6rem;
-				margin-bottom: 18px;
-			}
-			#about p {
-				color: var(--text-muted);
-				max-width: 64ch;
-			}
-
-			.tags {
+			/* DEPTH ZONES — no background of their own; the body's single
+			   continuous gradient (see styles.css) shows through everywhere, so
+			   nothing hard-cuts at a section boundary. Sized to content instead
+			   of forced viewport heights, and centered uniformly — variety comes
+			   from the rail, the surface wave, and the alternating project cards
+			   below, not from each section doing something different vertically. */
+			section.zone {
+				min-height: 46vh;
 				display: flex;
-				flex-wrap: wrap;
-				gap: 8px;
-				margin-top: 20px;
+				flex-direction: column;
+				padding-top: 20px;
+				scroll-margin-top: 84px;
 			}
-			.tag {
-				font-family: "IBM Plex Mono", monospace;
-				font-size: 0.78rem;
-				background: var(--bg);
-				border: 1px solid var(--border);
-				color: var(--text-muted);
-				padding: 5px 10px;
-				border-radius: 6px;
-			}
-			.band--dark .tag {
-				background: rgba(255, 255, 255, 0.06);
-				border-color: rgba(255, 255, 255, 0.15);
-				color: var(--ink-muted);
+			#contact.zone {
+				min-height: 38vh;
 			}
 
-			/* PROJECT CARD */
+			.zone-body {
+				flex: 1;
+				display: flex;
+				align-items: center;
+				padding: clamp(56px, 9vh, 100px) 0;
+			}
+
+			.particles,
+			.marine-snow,
+			.fish-school,
+			.jellyfish-layer,
+			.crossing-creature {
+				position: absolute;
+				pointer-events: none;
+				z-index: 0;
+			}
+			.particles,
+			.marine-snow,
+			.fish-school,
+			.jellyfish-layer {
+				inset: 0;
+			}
+
+			.marine-snow {
+				background-image:
+					radial-gradient(
+						1.3px 1.3px at 12% 18%,
+						rgba(255, 255, 255, 0.4),
+						transparent 60%
+					),
+					radial-gradient(
+						1px 1px at 55% 8%,
+						rgba(255, 255, 255, 0.3),
+						transparent 60%
+					),
+					radial-gradient(
+						1.4px 1.4px at 78% 40%,
+						rgba(255, 255, 255, 0.35),
+						transparent 60%
+					),
+					radial-gradient(
+						1px 1px at 30% 55%,
+						rgba(255, 255, 255, 0.28),
+						transparent 60%
+					),
+					radial-gradient(
+						1.2px 1.2px at 90% 70%,
+						rgba(255, 255, 255, 0.32),
+						transparent 60%
+					),
+					radial-gradient(
+						1px 1px at 15% 85%,
+						rgba(255, 255, 255, 0.25),
+						transparent 60%
+					),
+					radial-gradient(
+						1.3px 1.3px at 65% 92%,
+						rgba(255, 255, 255, 0.3),
+						transparent 60%
+					),
+					radial-gradient(
+						1px 1px at 45% 35%,
+						rgba(255, 255, 255, 0.25),
+						transparent 60%
+					);
+				background-size: 260px 320px;
+				animation: snowDrift 60s linear infinite;
+				opacity: 0.3;
+			}
+			@keyframes snowDrift {
+				from {
+					background-position: 0 0;
+				}
+				to {
+					background-position: -130px 480px;
+				}
+			}
+
+			/* AMBIENT FISH — erratic wandering, no hover interaction */
+			.fish-pos {
+				position: absolute;
+			}
+			.fish-wander,
+			.fish-inner {
+				display: block;
+			}
+			@keyframes swimX {
+				from {
+					transform: translate(0, 0);
+				}
+				to {
+					transform: translate(var(--swim-x, 24px), var(--swim-y, -6px));
+				}
+			}
+
+			/* PROJECTS — cards alternate sides down the page instead of stacking
+			   dead-center; each new project just continues the zigzag. */
+			.projects-list {
+				display: flex;
+				flex-direction: column;
+				gap: 56px;
+			}
+			.project-row {
+				display: flex;
+			}
+			.project-row--start {
+				justify-content: flex-start;
+			}
+			.project-row--end {
+				justify-content: flex-end;
+			}
 			.project {
-				background: var(--surface);
-				border: 1px solid var(--border);
+				position: relative;
+				z-index: 1;
+				background: rgba(255, 255, 255, 0.05);
+				border: 1px solid rgba(255, 255, 255, 0.14);
 				border-radius: 14px;
-				padding: 36px;
-				max-width: 760px;
+				padding: 34px;
+				max-width: 620px;
+				overflow: hidden;
+				backdrop-filter: blur(6px);
+			}
+			.project::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 4px;
+				background: linear-gradient(
+					90deg,
+					var(--teal),
+					var(--cyan),
+					var(--violet)
+				);
+			}
+			.project-row--end .project::before {
+				background: linear-gradient(
+					90deg,
+					var(--violet),
+					var(--cyan),
+					var(--teal)
+				);
 			}
 			.project-head {
 				display: flex;
 				align-items: center;
+				justify-content: space-between;
 				gap: 12px;
+			}
+			.project-title-group {
+				display: flex;
+				align-items: center;
+				gap: 10px;
 				flex-wrap: wrap;
 			}
-			.project-head h3 {
-				font-family: "Space Grotesk", sans-serif;
+			.project-title-group h3 {
 				font-size: 1.35rem;
-				margin: 0;
 			}
-			.badge {
-				font-size: 0.75rem;
-				font-weight: 600;
-				background: var(--teal-soft);
-				color: #0f6c63;
-				padding: 3px 10px;
-				border-radius: 100px;
+			.project-link {
+				display: inline-flex;
+				align-items: center;
+				gap: 4px;
+				text-decoration-color: rgba(255, 255, 255, 0.3);
+			}
+			.project-link:hover {
+				text-decoration-color: var(--teal);
+			}
+			.project-head .icon-link {
+				flex: none;
+			}
+			.project-head .icon-link svg {
+				width: 22px;
+				height: 22px;
 			}
 			.tagline {
 				color: var(--text-muted);
@@ -409,55 +378,270 @@
 			.project p.desc {
 				margin-top: 16px;
 				color: var(--text);
-				max-width: 62ch;
+				max-width: 58ch;
 			}
 			.project .tags {
 				margin-top: 22px;
 			}
-			.project-links {
-				margin-top: 24px;
+			.project-meta {
+				margin-top: 18px;
+				font-family: "IBM Plex Mono", monospace;
+				font-size: 0.75rem;
+				color: var(--text-muted);
+				opacity: 0.7;
+			}
+			.case-study-link {
+				display: inline-flex;
+				align-items: center;
+				gap: 5px;
+				margin-top: 22px;
+				font-size: 0.92rem;
+				color: var(--text-muted);
+			}
+			.case-study-link:hover {
+				color: var(--text);
 			}
 
-			/* CONTACT */
-			#contact .btn-row {
-				margin-top: 22px;
+			/* ABOUT — calm, centered, one whale passes occasionally */
+			.about-inner {
+				max-width: 680px;
+				margin: 0 auto;
+				position: relative;
+				z-index: 1;
 			}
-			.foot-note {
-				margin-top: 56px;
+			.about-glow {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 420px;
+				height: 420px;
+				margin: -210px 0 0 -210px;
+				border-radius: 50%;
+				background: radial-gradient(
+					circle,
+					rgba(127, 209, 245, 0.1),
+					transparent 65%
+				);
+				pointer-events: none;
+				z-index: 0;
+			}
+			#about p {
+				color: var(--text-muted);
+				max-width: 56ch;
+				margin: 0;
+			}
+			#about p + p {
+				margin-top: 14px;
+			}
+			#about .tags {
+				margin-top: 20px;
+			}
+
+			/* JELLYFISH — gentle passive drift, no hover interaction */
+			.jelly-pos {
+				position: absolute;
+			}
+			.jelly-wander,
+			.jelly-inner {
+				display: block;
+			}
+			.jelly-inner {
+				animation-name: bob;
+				animation-timing-function: ease-in-out;
+				animation-iteration-count: infinite;
+				animation-direction: alternate;
+			}
+			@keyframes bob {
+				from {
+					transform: translateY(-8px);
+				}
+				to {
+					transform: translateY(8px);
+				}
+			}
+
+			.contact-inner {
+				max-width: 520px;
+				position: relative;
+				z-index: 1;
+			}
+			#contact p {
+				color: var(--text-muted);
+				max-width: 50ch;
+				margin: 0;
+			}
+
+			/* COMPOSE — a small "type it, send it" box instead of a bare mailto
+			   link. It still just opens the visitor's own mail app on submit —
+			   nothing is sent through this site, same privacy stance as Chroma. */
+			.compose {
+				margin-top: 26px;
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+				background: rgba(255, 255, 255, 0.04);
+				border: 1px solid var(--hairline);
+				border-radius: 14px;
+				padding: 26px;
+				max-width: 480px;
+			}
+			.compose-field {
+				display: flex;
+				flex-direction: column;
+				gap: 6px;
 				font-size: 0.85rem;
-				color: var(--ink-muted);
+				color: var(--text-muted);
+			}
+			.compose-field input,
+			.compose-field textarea {
+				font: inherit;
+				color: var(--text);
+				background: rgba(255, 255, 255, 0.03);
+				border: 1px solid var(--hairline);
+				border-radius: 8px;
+				padding: 10px 12px;
+				resize: vertical;
+			}
+			.compose-field input::placeholder,
+			.compose-field textarea::placeholder {
+				color: var(--text-muted);
+				opacity: 0.6;
+			}
+			.compose .btn {
+				align-self: flex-start;
+			}
+			.compose-note {
+				margin: 0;
+				font-size: 0.78rem;
+				color: var(--text-muted);
+				opacity: 0.75;
+			}
+
+			/* SIGNATURE CROSSING CREATURES — rare, slow, full-width passes */
+			.crossing-creature {
+				left: 0;
+			}
+			.crossing-creature svg {
+				display: block;
+				filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.25));
+			}
+			@keyframes crossRL {
+				0% {
+					transform: translateX(-25vw) translateY(0);
+					opacity: 0;
+				}
+				4% {
+					opacity: 0.6;
+				}
+				46% {
+					transform: translateX(70vw) translateY(-15px);
+					opacity: 0.6;
+				}
+				50% {
+					opacity: 0;
+				}
+				100% {
+					transform: translateX(125vw) translateY(0);
+					opacity: 0;
+				}
+			}
+			@keyframes crossLR {
+				0% {
+					transform: translateX(125vw) translateY(0);
+					opacity: 0;
+				}
+				4% {
+					opacity: 0.35;
+				}
+				46% {
+					transform: translateX(-20vw) translateY(10px);
+					opacity: 0.35;
+				}
+				50% {
+					opacity: 0;
+				}
+				100% {
+					transform: translateX(-25vw) translateY(0);
+					opacity: 0;
+				}
+			}
+
+			/* SUBMERSION VEIL — a fixed vignette whose opacity is tied to scroll
+			   progress (see script), so the edges of the screen quietly darken
+			   the deeper you go. Subtle by design; it's a pressure, not an effect. */
+			.depth-veil {
+				position: fixed;
+				inset: 0;
+				pointer-events: none;
+				z-index: 5;
+				background: radial-gradient(
+					ellipse at 50% 42%,
+					transparent 38%,
+					rgba(1, 3, 10, 0.55) 100%
+				);
+				opacity: calc(var(--depth, 0) * 0.9);
+			}
+
+			/* FOOTER */
+			.site-footer {
+				background: #020207;
+				border-top: 1px solid var(--hairline);
+				padding: 22px 0;
+			}
+			.footer-inner {
 				display: flex;
 				align-items: center;
-				gap: 8px;
+				justify-content: center;
+				gap: 10px;
 				flex-wrap: wrap;
+				font-size: 0.85rem;
+				color: var(--text-muted);
 			}
 			.visit-badge {
 				height: 14px;
 				opacity: 0.85;
 			}
 
-			@media (min-width: 900px) {
-				.orbit {
-					width: 340px;
-					height: 340px;
+			@media (prefers-reduced-motion: reduce) {
+				.ring,
+				.fish-wander,
+				.jelly-inner,
+				.jelly-wander,
+				.crossing-creature,
+				.marine-snow {
+					animation: none;
 				}
-				.ring.r1 {
-					width: 340px;
-					height: 340px;
+				.hero h1,
+				.hero p,
+				.hero .btn-row,
+				.orbit-container {
+					animation: none;
 				}
-				.ring.r2 {
-					width: 234px;
-					height: 234px;
+			}
+
+			@media (max-width: 900px) {
+				.fish-school,
+				.jellyfish-layer,
+				.crossing-creature {
+					display: none;
 				}
-				.ring.r3 {
-					width: 138px;
-					height: 138px;
+				section.zone {
+					min-height: 0;
+					padding: 48px 0;
+				}
+				.project-row--start,
+				.project-row--end {
+					justify-content: center;
 				}
 			}
 
 			@media (max-width: 760px) {
 				.hero {
 					grid-template-columns: 1fr;
+					padding: 40px 0;
+				}
+				.hero-section {
+					min-height: 0;
 				}
 				.orbit-container {
 					order: -1;
@@ -484,23 +668,38 @@
 				}
 				.project {
 					padding: 24px;
+					max-width: 100%;
 				}
-				.wrap {
-					padding: 0 20px;
-				}
-				.nav-inner {
-					padding: 16px 20px;
+				.wave--surface {
+					height: 70px;
 				}
 			}
 		</style>
 	</head>
 	<body id="top">
+		<div class="depth-veil" aria-hidden="true"></div>
+
+		<nav class="depth-rail" aria-label="Scroll depth">
+			<a class="depth-tick" data-target="hero" href="#hero"
+				><span>Night</span></a
+			>
+			<a class="depth-tick" data-target="projects" href="#projects"
+				><span>Shallows</span></a
+			>
+			<a class="depth-tick" data-target="about" href="#about"
+				><span>Twilight</span></a
+			>
+			<a class="depth-tick" data-target="contact" href="#contact"
+				><span>Abyss</span></a
+			>
+		</nav>
+
 		<header>
 			<nav class="nav-inner">
 				<a class="wordmark" href="#top">brian</a>
 				<div class="nav-links">
-					<a href="#about">About</a>
 					<a href="#projects">Projects</a>
+					<a href="#about">About</a>
 					<a href="#contact">Contact</a>
 					<a
 						class="icon-link"
@@ -518,171 +717,403 @@
 		</header>
 
 		<main>
-			<section class="hero-section">
+			<section class="hero-section" id="hero">
+				<div
+					class="particles"
+					aria-hidden="true"
+					style="
+						background-image:
+							radial-gradient(1.4px 1.4px at 8% 15%, #fff, transparent),
+							radial-gradient(1px 1px at 18% 8%, #fff, transparent),
+							radial-gradient(1.6px 1.6px at 27% 22%, #fff, transparent),
+							radial-gradient(1px 1px at 35% 12%, #fff, transparent),
+							radial-gradient(1.2px 1.2px at 44% 28%, #fff, transparent),
+							radial-gradient(1px 1px at 52% 9%, #fff, transparent),
+							radial-gradient(1.5px 1.5px at 61% 18%, #fff, transparent),
+							radial-gradient(1px 1px at 69% 6%, #fff, transparent),
+							radial-gradient(1.3px 1.3px at 77% 24%, #fff, transparent),
+							radial-gradient(1px 1px at 85% 14%, #fff, transparent),
+							radial-gradient(1.4px 1.4px at 93% 20%, #fff, transparent),
+							radial-gradient(1px 1px at 14% 38%, #fff, transparent),
+							radial-gradient(1.2px 1.2px at 30% 42%, #fff, transparent),
+							radial-gradient(1px 1px at 58% 35%, #fff, transparent),
+							radial-gradient(1.3px 1.3px at 74% 40%, #fff, transparent),
+							radial-gradient(1px 1px at 90% 44%, #fff, transparent),
+							radial-gradient(1px 1px at 5% 5%, #fff, transparent),
+							radial-gradient(1px 1px at 97% 8%, #fff, transparent);
+						background-repeat: no-repeat;
+						opacity: 0.85;
+					"></div>
 				<div class="wrap hero">
 					<div>
 						<h1>Hi, I'm Brian.</h1>
 						<p>
-							I'm a full-stack developer who likes projects without an obvious
-							template to copy. Lately that means building tools for thinking
-							more clearly about your own life — not another to-do app.
+							I make things when a problem won't leave me alone — usually
+							software, but not always. This site is where those things end up,
+							whatever form they take.
 						</p>
 						<div class="btn-row">
-							<a class="btn" href="#projects">See what I'm building</a>
+							<a class="btn" href="#projects">See what I'm making</a>
 						</div>
 					</div>
 					<div class="orbit-container">
 						<div class="orbit" aria-hidden="true">
-							<div class="ring r1"><div class="moon"></div></div>
-							<div class="ring r2"><div class="moon"></div></div>
-							<div class="ring r3"><div class="moon"></div></div>
-							<div class="planet"></div>
+							<div class="ring r1"><div class="satellite"></div></div>
+							<div class="ring r2"><div class="satellite"></div></div>
+							<div class="ring r3"><div class="satellite"></div></div>
+							<div class="moon-body">
+								<div class="crater c1"></div>
+								<div class="crater c2"></div>
+							</div>
 						</div>
 					</div>
 				</div>
-			</section>
-
-			<section id="about" class="band band--surface">
-				<div class="wrap reveal">
-					<h2>About</h2>
-					<p>
-						I build with React, Node, Python, and whatever database agrees to
-						sit still. I like problems that don't come with a template already
-						attached — right now that's less "build a dashboard" and more
-						"figure out how people actually make sense of their own
-						experiences."
-					</p>
-					<div class="tags">
-						<span class="tag">React</span>
-						<span class="tag">Node.js</span>
-						<span class="tag">Python</span>
-						<span class="tag">Flask</span>
-						<span class="tag">PostgreSQL</span>
-						<span class="tag">SQLite</span>
-						<span class="tag">Docker</span>
-						<span class="tag">Redux</span>
-					</div>
+				<div class="wave wave--surface" aria-hidden="true">
+					<svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+						<defs>
+							<linearGradient id="surfaceFill" x1="0" y1="0" x2="0" y2="1">
+								<stop offset="0%" stop-color="rgba(180,215,255,0.16)" />
+								<stop offset="100%" stop-color="rgba(180,215,255,0)" />
+							</linearGradient>
+							<linearGradient id="surfaceLine" x1="0" y1="0" x2="1" y2="0">
+								<stop offset="0%" stop-color="rgba(255,255,255,0)" />
+								<stop offset="12%" stop-color="rgba(255,255,255,0.55)" />
+								<stop offset="50%" stop-color="rgba(255,255,255,0.9)" />
+								<stop offset="88%" stop-color="rgba(255,255,255,0.55)" />
+								<stop offset="100%" stop-color="rgba(255,255,255,0)" />
+							</linearGradient>
+						</defs>
+						<path
+							d="M0,46 C220,80 380,10 600,46 C820,82 1000,8 1220,46 C1320,64 1380,54 1440,46 L1440,120 L0,120 Z"
+							fill="url(#surfaceFill)" />
+						<path
+							d="M0,46 C220,80 380,10 600,46 C820,82 1000,8 1220,46 C1320,64 1380,54 1440,46"
+							fill="none"
+							stroke="url(#surfaceLine)"
+							stroke-width="2" />
+					</svg>
 				</div>
 			</section>
 
-			<section id="projects" class="band">
-				<div class="wrap">
-					<h2 class="reveal">What I'm building</h2>
-					<div class="project reveal">
-						<div class="project-head">
-							<h3>Chroma</h3>
-							<span class="badge">Live</span>
+			<section id="projects" class="zone">
+				<div class="marine-snow" aria-hidden="true"></div>
+				<div class="wrap zone-body reveal">
+					<div style="width: 100%">
+						<div class="section-label">
+							<span class="chip chip--cyan"></span>
+							<h2>What I'm making</h2>
 						</div>
-						<p class="tagline">
-							A local-first tool for mapping how you make sense of your own
-							experiences.
+						<div class="projects-list">
+							<div class="project-row project-row--start">
+								<div class="project">
+									<div class="project-head">
+										<div class="project-title-group">
+											<h3>
+												<a
+													class="project-link"
+													href="https://oceanyx.github.io/Chroma/"
+													target="_blank"
+													rel="noopener">
+													Chroma
+													<svg
+														class="ext-icon"
+														viewBox="0 0 24 24"
+														fill="none"
+														stroke="currentColor"
+														stroke-width="2"
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														aria-hidden="true">
+														<path d="M7 17L17 7" />
+														<path d="M8 7h9v9" />
+													</svg>
+												</a>
+											</h3>
+											<span class="badge">Live</span>
+										</div>
+										<a
+											class="icon-link"
+											href="https://github.com/Oceanyx/Chroma"
+											target="_blank"
+											rel="noopener"
+											aria-label="View source on GitHub">
+											<svg
+												viewBox="0 0 24 24"
+												fill="currentColor"
+												aria-hidden="true">
+												<path
+													d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+											</svg>
+										</a>
+									</div>
+									<p class="tagline">
+										A local-first tool for mapping how you make sense of your
+										own experiences.
+									</p>
+									<p class="desc">
+										Chroma turns the things you notice into a small universe.
+										Every observation becomes a planet, and your reflections on
+										it — what you felt, what actually happened, what pattern it
+										fits — become moons in orbit around it. Planets link into
+										constellations, and can be marked as supporting or
+										contradicting each other.
+									</p>
+									<p class="desc">
+										It's live and worth trying today, not just a proof of
+										concept. And it never talks to a server — everything stays
+										in your browser, so nothing you write here ever becomes
+										someone else's data.
+									</p>
+									<div class="tags">
+										<span class="tag">React</span>
+										<span class="tag">ReactFlow</span>
+										<span class="tag">IndexedDB</span>
+										<span class="tag">No tracking</span>
+									</div>
+									<p class="project-meta">Mar 2025 — Present</p>
+									<a class="case-study-link" href="projects/chroma.html">
+										Read the case study
+										<svg
+											class="ext-icon"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											aria-hidden="true">
+											<path d="M5 12h14" />
+											<path d="M13 6l6 6-6 6" />
+										</svg>
+									</a>
+								</div>
+							</div>
+
+							<div class="project-row project-row--end">
+								<div class="project">
+									<div class="project-head">
+										<div class="project-title-group">
+											<h3>Rift</h3>
+										</div>
+									</div>
+									<p class="tagline">
+										A real-time messaging platform built around low-latency
+										delivery and proper session auth.
+									</p>
+									<p class="desc">
+										Rift is a Socket.io-backed chat platform with channel
+										organization and secure, session-based authentication. The
+										more interesting part was underneath: tuning the PostgreSQL
+										queries so message history stays fast to pull even as
+										conversations grow, instead of just throwing more indexes at
+										it later.
+									</p>
+									<div class="tags">
+										<span class="tag">React</span>
+										<span class="tag">Socket.io</span>
+										<span class="tag">PostgreSQL</span>
+										<span class="tag">Redux</span>
+									</div>
+									<p class="project-meta">Feb — Mar 2025</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="wave wave--to-about" aria-hidden="true">
+					<svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+						<defs>
+							<linearGradient id="curl2" x1="0" y1="0" x2="1" y2="0">
+								<stop offset="0%" stop-color="rgba(255,255,255,0)" />
+								<stop offset="50%" stop-color="rgba(255,255,255,0.4)" />
+								<stop offset="100%" stop-color="rgba(255,255,255,0)" />
+							</linearGradient>
+						</defs>
+						<path
+							d="M0,30 C240,54 480,6 720,30 C960,54 1200,6 1440,30"
+							fill="none"
+							stroke="url(#curl2)"
+							stroke-width="1.5" />
+					</svg>
+				</div>
+			</section>
+
+			<section id="about" class="zone">
+				<div class="marine-snow" aria-hidden="true" style="opacity: 0.22"></div>
+				<div class="wrap zone-body reveal">
+					<div class="about-inner">
+						<div class="about-glow" aria-hidden="true"></div>
+						<div class="section-label">
+							<span class="chip chip--teal"></span>
+							<h2>About</h2>
+						</div>
+						<p>
+							I'm drawn to problems that don't already have an obvious shape —
+							the kind where you have to figure out what you're even building
+							before you can build it. Right now a lot of that comes out as
+							code, but this site isn't just a home for software. It's wherever
+							the current thing happens to be.
 						</p>
-						<p class="desc">
-							It's live and usable today, with more features on the way. Chroma
-							treats each thing you notice or do as a small planet. You attach
-							reflections to it — what you felt, what you did, what's actually
-							verifiable, and what pattern it fits — as moons orbiting that
-							planet. Planets link into constellations, and can be marked as
-							supporting or in tension with each other. The idea is to make the
-							gap between how something felt and what actually happened a little
-							easier to see, and to let patterns surface across a lot of small
-							reflections over time.
+						<p>
+							I came to it sideways — an English degree, a stint coaching
+							competitive chess, and then a software engineering program at App
+							Academy that turned "figure out the shape of the problem first"
+							into an actual job description. The chess habit stuck: I still
+							think in terms of position and pattern before I think in terms of
+							syntax.
 						</p>
-						<p class="desc">
-							It runs entirely in your browser. No accounts, no server — nothing
-							ever leaves your device.
+						<p
+							style="
+								margin-top: 18px;
+								font-size: 0.85rem;
+								color: var(--text-muted);
+								font-family: &quot;IBM Plex Mono&quot;, monospace;
+							">
+							Currently reaching for:
 						</p>
 						<div class="tags">
-							<span class="tag">Local-first</span>
-							<span class="tag">IndexedDB</span>
-							<span class="tag">Pan &amp; zoom canvas</span>
-							<span class="tag">No tracking</span>
-						</div>
-						<div class="project-links btn-row">
-							<a
-								class="btn"
-								href="https://oceanyx.github.io/Chroma/"
-								target="_blank"
-								rel="noopener"
-								>Try Chroma</a
-							>
-							<a
-								class="link-plain"
-								href="https://github.com/Oceanyx/Chroma"
-								target="_blank"
-								rel="noopener"
-								>View the source</a
-							>
+							<span class="tag">React</span>
+							<span class="tag">Node.js</span>
+							<span class="tag">Python</span>
+							<span class="tag">Flask</span>
+							<span class="tag">PostgreSQL</span>
+							<span class="tag">SQLite</span>
+							<span class="tag">Docker</span>
+							<span class="tag">Redux</span>
 						</div>
 					</div>
 				</div>
+				<div class="wave wave--to-contact" aria-hidden="true">
+					<svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+						<defs>
+							<linearGradient id="curl3" x1="0" y1="0" x2="1" y2="0">
+								<stop offset="0%" stop-color="rgba(255,255,255,0)" />
+								<stop offset="50%" stop-color="rgba(255,255,255,0.28)" />
+								<stop offset="100%" stop-color="rgba(255,255,255,0)" />
+							</linearGradient>
+						</defs>
+						<path
+							d="M0,30 C240,54 480,6 720,30 C960,54 1200,6 1440,30"
+							fill="none"
+							stroke="url(#curl3)"
+							stroke-width="1.5" />
+					</svg>
+				</div>
 			</section>
 
-			<section id="contact" class="band band--dark">
-				<div class="wrap reveal">
-					<h2>Say hi</h2>
-					<p>
-						If you're building something weird, or just want to compare notes on
-						side projects, I'm around.
-					</p>
-					<div class="btn-row">
-						<a
-							class="btn"
-							href="#"
-							id="email-cta"
-							data-user="bchanyx"
-							data-domain="gmail.com"
-							>Email me</a
-						>
-						<a
-							class="icon-link icon-label"
-							href="https://github.com/oceanyx"
-							target="_blank"
-							rel="noopener">
-							<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-								<path
-									d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-							</svg>
-							GitHub
-						</a>
-						<a
-							class="icon-link icon-label"
-							href="https://linkedin.com/in/oceanyx"
-							target="_blank"
-							rel="noopener">
-							<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-								<path
-									d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.137 1.445-2.137 2.939v5.667h-3.554v-11.452h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zm-15.11-13.019c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019h-3.564v-11.452h3.564v11.452zm16.905-20.452h-20.454c-.979 0-1.771.774-1.771 1.729v20.542c0 .956.792 1.729 1.771 1.729h20.451c.978 0 1.778-.773 1.778-1.729v-20.542c0-.955-.8-1.729-1.778-1.729z" />
-							</svg>
-							LinkedIn
-						</a>
+			<section id="contact" class="zone">
+				<div class="marine-snow" aria-hidden="true" style="opacity: 0.4"></div>
+				<div class="wrap zone-body reveal">
+					<div class="contact-inner">
+						<div class="section-label">
+							<span class="chip chip--violet"></span>
+							<h2>Contact Me</h2>
+						</div>
+						<p>
+							If you're building something weird, or just want to compare notes
+							on side projects, I'm around.
+						</p>
+
+						<form class="compose" id="compose-form">
+							<label class="compose-field">
+								<span>Your name</span>
+								<input
+									type="text"
+									id="compose-name"
+									name="name"
+									placeholder="Optional"
+									autocomplete="name" />
+							</label>
+							<label class="compose-field">
+								<span>Message</span>
+								<textarea
+									id="compose-message"
+									name="message"
+									rows="4"
+									placeholder="What's on your mind?"
+									required></textarea>
+							</label>
+							<button class="btn" type="submit">
+								<svg
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true">
+									<path d="M22 2 11 13" />
+									<path d="M22 2 15 22 11 13 2 9 22 2Z" />
+								</svg>
+								Send
+							</button>
+							<p class="compose-note">
+								Opens in your own mail app — nothing is sent through this site.
+							</p>
+						</form>
+
+						<div class="btn-row" style="margin-top: 28px">
+							<a
+								class="icon-link icon-label"
+								href="https://github.com/oceanyx"
+								target="_blank"
+								rel="noopener">
+								<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+									<path
+										d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+								</svg>
+								GitHub
+							</a>
+							<a
+								class="icon-link icon-label"
+								href="https://linkedin.com/in/oceanyx"
+								target="_blank"
+								rel="noopener">
+								<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+									<path
+										d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.137 1.445-2.137 2.939v5.667h-3.554v-11.452h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zm-15.11-13.019c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019h-3.564v-11.452h3.564v11.452zm16.905-20.452h-20.454c-.979 0-1.771.774-1.771 1.729v20.542c0 .956.792 1.729 1.771 1.729h20.451c.978 0 1.778-.773 1.778-1.729v-20.542c0-.955-.8-1.729-1.778-1.729z" />
+								</svg>
+								LinkedIn
+							</a>
+						</div>
 					</div>
-					<p class="foot-note">
-						© 2026 Brian. Built with more coffee than sleep.
-						<img
-							class="visit-badge"
-							src="https://oceanyx.goatcounter.com/counter/home.svg?no-branding=1"
-							alt=""
-							loading="lazy"
-							onerror="this.remove()" />
-					</p>
 				</div>
 			</section>
 		</main>
 
-		<script>
-			// Mild email obfuscation: the address is assembled at click-time
-			// instead of sitting in the page source as a plain mailto: link.
-			document.querySelectorAll("[data-user]").forEach(function (el) {
-				var addr = el.dataset.user + "@" + el.dataset.domain;
-				el.addEventListener("click", function (e) {
-					e.preventDefault();
-					window.location.href = "mailto:" + addr;
-				});
-				el.setAttribute("aria-label", "Email " + addr);
-			});
+		<footer class="site-footer">
+			<div class="wrap footer-inner">
+				<span>© 2026 Brian. Built with more coffee than sleep.</span>
+				<img
+					class="visit-badge"
+					src="https://oceanyx.goatcounter.com/counter/home.svg?no-branding=1"
+					alt=""
+					loading="lazy"
+					onerror="this.remove()" />
+			</div>
+		</footer>
 
-			// Scroll-triggered reveal for section blocks
+		<script>
+			// Contact compose box: builds a mailto: link from what's typed and
+			// hands off to the visitor's own mail client. No backend, no form
+			// service, nothing stored or sent through this site.
+			var composeForm = document.getElementById("compose-form");
+			if (composeForm) {
+				composeForm.addEventListener("submit", function (e) {
+					e.preventDefault();
+					var name = document.getElementById("compose-name").value.trim();
+					var message = document.getElementById("compose-message").value.trim();
+					var subject = name ? "Hey Brian, it's " + name : "Hey Brian";
+					var mailto =
+						"mailto:bchanyx@gmail.com" +
+						"?subject=" +
+						encodeURIComponent(subject) +
+						"&body=" +
+						encodeURIComponent(message);
+					window.location.href = mailto;
+				});
+			}
+
 			var revealEls = document.querySelectorAll(".reveal");
 			if ("IntersectionObserver" in window) {
 				var io = new IntersectionObserver(
@@ -703,6 +1134,67 @@
 				revealEls.forEach(function (el) {
 					el.classList.add("is-visible");
 				});
+			}
+
+			// Depth rail: highlight the tick for whichever zone is currently
+			// in view, and let each tick double as an anchor-scroll link.
+			var railTicks = document.querySelectorAll(".depth-tick");
+			var railTargets = ["hero", "projects", "about", "contact"]
+				.map(function (id) {
+					return document.getElementById(id);
+				})
+				.filter(Boolean);
+
+			if (
+				railTicks.length &&
+				railTargets.length &&
+				"IntersectionObserver" in window
+			) {
+				var railObserver = new IntersectionObserver(
+					function (entries) {
+						entries.forEach(function (entry) {
+							if (entry.isIntersecting) {
+								var id = entry.target.id;
+								railTicks.forEach(function (tick) {
+									tick.classList.toggle(
+										"is-active",
+										tick.dataset.target === id,
+									);
+								});
+							}
+						});
+					},
+					{ threshold: 0.5 },
+				);
+				railTargets.forEach(function (el) {
+					railObserver.observe(el);
+				});
+			}
+
+			// Submersion veil: tie a --depth custom property (0 at the top of the
+			// page, 1 at the bottom) to scroll position, so the vignette in the
+			// CSS quietly deepens as you scroll further down.
+			var docEl = document.documentElement;
+			var reduceMotion =
+				window.matchMedia &&
+				window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+			function updateDepth() {
+				var scrollable = docEl.scrollHeight - window.innerHeight;
+				var progress = scrollable > 0 ? window.scrollY / scrollable : 0;
+				docEl.style.setProperty(
+					"--depth",
+					Math.min(Math.max(progress, 0), 1).toFixed(3),
+				);
+			}
+			if (!reduceMotion) {
+				window.addEventListener(
+					"scroll",
+					function () {
+						requestAnimationFrame(updateDepth);
+					},
+					{ passive: true },
+				);
+				updateDepth();
 			}
 		</script>
 	</body>
