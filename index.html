@@ -199,7 +199,47 @@
 				flex: 1;
 				display: flex;
 				align-items: center;
+				justify-content: flex-start;
 				padding: clamp(56px, 9vh, 100px) 0;
+			}
+
+			/* DEPTH LINES — the hard cuts on the page. Flat, opaque, no
+			   gradient: crisp instrument lines with a depth reading, instead
+			   of soft current-strokes. Same treatment at every boundary; the
+			   deeper ones just dim slightly, echoing less light underwater. */
+			.wave--line {
+				height: 44px;
+				display: flex;
+				align-items: flex-end;
+				position: relative;
+			}
+			.wave--line::after {
+				content: "";
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				height: 2px;
+				background: rgba(232, 237, 246, 0.85);
+			}
+			.wave--line.wave--dim1::after {
+				background: rgba(232, 237, 246, 0.5);
+			}
+			.wave--line.wave--dim2::after {
+				background: rgba(232, 237, 246, 0.3);
+			}
+			.depth-mark {
+				position: relative;
+				margin: 0 0 8px var(--gutter);
+				font-family: "IBM Plex Mono", monospace;
+				font-size: 0.7rem;
+				line-height: 1.4;
+				letter-spacing: 0.02em;
+				color: var(--text-muted);
+			}
+			.wave--dim1 .depth-mark,
+			.wave--dim2 .depth-mark {
+				opacity: 0.75;
 			}
 
 			.particles,
@@ -290,21 +330,25 @@
 				}
 			}
 
-			/* PROJECTS — cards alternate sides down the page instead of stacking
-			   dead-center; each new project just continues the zigzag. */
+			/* One fixed-width column, always left, shared by About and
+			   Contact — same spine the hero already commits to with its
+			   1.35fr/1fr grid. Kept well under half the wrap's width on
+			   purpose: half-and-half still reads as centered, so this stays
+			   a clear minority share with real open water to its right,
+			   where the rail lives. */
+			.zone-col {
+				max-width: 480px;
+			}
+			/* Projects gets its own wider column — two cards side by side —
+			   but starts at the exact same left edge as everything else. */
+			.projects-col {
+				max-width: 1120px;
+			}
 			.projects-list {
-				display: flex;
-				flex-direction: column;
-				gap: 56px;
-			}
-			.project-row {
-				display: flex;
-			}
-			.project-row--start {
-				justify-content: flex-start;
-			}
-			.project-row--end {
-				justify-content: flex-end;
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 32px;
+				align-items: start;
 			}
 			.project {
 				position: relative;
@@ -331,7 +375,7 @@
 					var(--violet)
 				);
 			}
-			.project-row--end .project::before {
+			.projects-list .project:nth-of-type(2)::before {
 				background: linear-gradient(
 					90deg,
 					var(--violet),
@@ -402,17 +446,17 @@
 				color: var(--text);
 			}
 
-			/* ABOUT — calm, centered, one whale passes occasionally */
+			/* ABOUT — same left column as everything else; the glow drifts
+			   right, out past the text, into the open water instead of
+			   sitting centered on the paragraph. */
 			.about-inner {
-				max-width: 680px;
-				margin: 0 auto;
 				position: relative;
 				z-index: 1;
 			}
 			.about-glow {
 				position: absolute;
 				top: 50%;
-				left: 50%;
+				left: 78%;
 				width: 420px;
 				height: 420px;
 				margin: -210px 0 0 -210px;
@@ -461,7 +505,6 @@
 			}
 
 			.contact-inner {
-				max-width: 520px;
 				position: relative;
 				z-index: 1;
 			}
@@ -619,6 +662,12 @@
 				}
 			}
 
+			@media (max-width: 1100px) {
+				.projects-list {
+					grid-template-columns: 1fr;
+				}
+			}
+
 			@media (max-width: 900px) {
 				.fish-school,
 				.jellyfish-layer,
@@ -628,10 +677,6 @@
 				section.zone {
 					min-height: 0;
 					padding: 48px 0;
-				}
-				.project-row--start,
-				.project-row--end {
-					justify-content: center;
 				}
 			}
 
@@ -670,8 +715,8 @@
 					padding: 24px;
 					max-width: 100%;
 				}
-				.wave--surface {
-					height: 70px;
+				.wave--line {
+					height: 36px;
 				}
 			}
 		</style>
@@ -684,13 +729,13 @@
 				><span>Night</span></a
 			>
 			<a class="depth-tick" data-target="projects" href="#projects"
-				><span>Shallows</span></a
+				><span>Shallows · 0m</span></a
 			>
 			<a class="depth-tick" data-target="about" href="#about"
-				><span>Twilight</span></a
+				><span>Twilight · 200m</span></a
 			>
 			<a class="depth-tick" data-target="contact" href="#contact"
-				><span>Abyss</span></a
+				><span>Abyss · 1000m</span></a
 			>
 		</nav>
 
@@ -768,180 +813,141 @@
 						</div>
 					</div>
 				</div>
-				<div class="wave wave--surface" aria-hidden="true">
-					<svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-						<defs>
-							<linearGradient id="surfaceFill" x1="0" y1="0" x2="0" y2="1">
-								<stop offset="0%" stop-color="rgba(180,215,255,0.16)" />
-								<stop offset="100%" stop-color="rgba(180,215,255,0)" />
-							</linearGradient>
-							<linearGradient id="surfaceLine" x1="0" y1="0" x2="1" y2="0">
-								<stop offset="0%" stop-color="rgba(255,255,255,0)" />
-								<stop offset="12%" stop-color="rgba(255,255,255,0.55)" />
-								<stop offset="50%" stop-color="rgba(255,255,255,0.9)" />
-								<stop offset="88%" stop-color="rgba(255,255,255,0.55)" />
-								<stop offset="100%" stop-color="rgba(255,255,255,0)" />
-							</linearGradient>
-						</defs>
-						<path
-							d="M0,46 C220,80 380,10 600,46 C820,82 1000,8 1220,46 C1320,64 1380,54 1440,46 L1440,120 L0,120 Z"
-							fill="url(#surfaceFill)" />
-						<path
-							d="M0,46 C220,80 380,10 600,46 C820,82 1000,8 1220,46 C1320,64 1380,54 1440,46"
-							fill="none"
-							stroke="url(#surfaceLine)"
-							stroke-width="2" />
-					</svg>
+				<div class="wave wave--line" aria-hidden="true">
+					<span class="depth-mark">0m</span>
 				</div>
 			</section>
 
 			<section id="projects" class="zone">
 				<div class="marine-snow" aria-hidden="true"></div>
 				<div class="wrap zone-body reveal">
-					<div style="width: 100%">
+					<div class="projects-col">
 						<div class="section-label">
 							<span class="chip chip--cyan"></span>
 							<h2>What I'm making</h2>
 						</div>
 						<div class="projects-list">
-							<div class="project-row project-row--start">
-								<div class="project">
-									<div class="project-head">
-										<div class="project-title-group">
-											<h3>
-												<a
-													class="project-link"
-													href="https://oceanyx.github.io/Chroma/"
-													target="_blank"
-													rel="noopener">
-													Chroma
-													<svg
-														class="ext-icon"
-														viewBox="0 0 24 24"
-														fill="none"
-														stroke="currentColor"
-														stroke-width="2"
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														aria-hidden="true">
-														<path d="M7 17L17 7" />
-														<path d="M8 7h9v9" />
-													</svg>
-												</a>
-											</h3>
-											<span class="badge">Live</span>
-										</div>
-										<a
-											class="icon-link"
-											href="https://github.com/Oceanyx/Chroma"
-											target="_blank"
-											rel="noopener"
-											aria-label="View source on GitHub">
-											<svg
-												viewBox="0 0 24 24"
-												fill="currentColor"
-												aria-hidden="true">
-												<path
-													d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-											</svg>
-										</a>
+							<div class="project">
+								<div class="project-head">
+									<div class="project-title-group">
+										<h3>
+											<a
+												class="project-link"
+												href="https://oceanyx.github.io/Chroma/"
+												target="_blank"
+												rel="noopener">
+												Chroma
+												<svg
+													class="ext-icon"
+													viewBox="0 0 24 24"
+													fill="none"
+													stroke="currentColor"
+													stroke-width="2"
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													aria-hidden="true">
+													<path d="M7 17L17 7" />
+													<path d="M8 7h9v9" />
+												</svg>
+											</a>
+										</h3>
+										<span class="badge">Live</span>
 									</div>
-									<p class="tagline">
-										A local-first tool for mapping how you make sense of your
-										own experiences.
-									</p>
-									<p class="desc">
-										Chroma turns the things you notice into a small universe.
-										Every observation becomes a planet, and your reflections on
-										it — what you felt, what actually happened, what pattern it
-										fits — become moons in orbit around it. Planets link into
-										constellations, and can be marked as supporting or
-										contradicting each other.
-									</p>
-									<p class="desc">
-										It's live and worth trying today, not just a proof of
-										concept. And it never talks to a server — everything stays
-										in your browser, so nothing you write here ever becomes
-										someone else's data.
-									</p>
-									<div class="tags">
-										<span class="tag">React</span>
-										<span class="tag">ReactFlow</span>
-										<span class="tag">IndexedDB</span>
-										<span class="tag">No tracking</span>
-									</div>
-									<p class="project-meta">Mar 2025 — Present</p>
-									<a class="case-study-link" href="projects/chroma.html">
-										Read the case study
+									<a
+										class="icon-link"
+										href="https://github.com/Oceanyx/Chroma"
+										target="_blank"
+										rel="noopener"
+										aria-label="View source on GitHub">
 										<svg
-											class="ext-icon"
 											viewBox="0 0 24 24"
-											fill="none"
-											stroke="currentColor"
-											stroke-width="2"
-											stroke-linecap="round"
-											stroke-linejoin="round"
+											fill="currentColor"
 											aria-hidden="true">
-											<path d="M5 12h14" />
-											<path d="M13 6l6 6-6 6" />
+											<path
+												d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
 										</svg>
 									</a>
 								</div>
+								<p class="tagline">
+									A local-first tool for mapping how you make sense of your own
+									experiences.
+								</p>
+								<p class="desc">
+									Chroma turns the things you notice into a small universe.
+									Every observation becomes a planet, and your reflections on it
+									— what you felt, what actually happened, what pattern it fits
+									— become moons in orbit around it. Planets link into
+									constellations, and can be marked as supporting or
+									contradicting each other.
+								</p>
+								<p class="desc">
+									It's live and worth trying today, not just a proof of concept.
+									And it never talks to a server — everything stays in your
+									browser, so nothing you write here ever becomes someone else's
+									data.
+								</p>
+								<div class="tags">
+									<span class="tag">React</span>
+									<span class="tag">ReactFlow</span>
+									<span class="tag">IndexedDB</span>
+									<span class="tag">No tracking</span>
+								</div>
+								<p class="project-meta">Mar 2025 — Present</p>
+								<a class="case-study-link" href="projects/chroma.html">
+									Read the case study
+									<svg
+										class="ext-icon"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true">
+										<path d="M5 12h14" />
+										<path d="M13 6l6 6-6 6" />
+									</svg>
+								</a>
 							</div>
 
-							<div class="project-row project-row--end">
-								<div class="project">
-									<div class="project-head">
-										<div class="project-title-group">
-											<h3>Rift</h3>
-										</div>
+							<div class="project">
+								<div class="project-head">
+									<div class="project-title-group">
+										<h3>Rift</h3>
 									</div>
-									<p class="tagline">
-										A real-time messaging platform built around low-latency
-										delivery and proper session auth.
-									</p>
-									<p class="desc">
-										Rift is a Socket.io-backed chat platform with channel
-										organization and secure, session-based authentication. The
-										more interesting part was underneath: tuning the PostgreSQL
-										queries so message history stays fast to pull even as
-										conversations grow, instead of just throwing more indexes at
-										it later.
-									</p>
-									<div class="tags">
-										<span class="tag">React</span>
-										<span class="tag">Socket.io</span>
-										<span class="tag">PostgreSQL</span>
-										<span class="tag">Redux</span>
-									</div>
-									<p class="project-meta">Feb — Mar 2025</p>
 								</div>
+								<p class="tagline">
+									A real-time messaging platform built around low-latency
+									delivery and proper session auth.
+								</p>
+								<p class="desc">
+									Rift is a Socket.io-backed chat platform with channel
+									organization and secure, session-based authentication. The
+									more interesting part was underneath: tuning the PostgreSQL
+									queries so message history stays fast to pull even as
+									conversations grow, instead of just throwing more indexes at
+									it later.
+								</p>
+								<div class="tags">
+									<span class="tag">React</span>
+									<span class="tag">Socket.io</span>
+									<span class="tag">PostgreSQL</span>
+									<span class="tag">Redux</span>
+								</div>
+								<p class="project-meta">Feb — Mar 2025</p>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="wave wave--to-about" aria-hidden="true">
-					<svg viewBox="0 0 1440 60" preserveAspectRatio="none">
-						<defs>
-							<linearGradient id="curl2" x1="0" y1="0" x2="1" y2="0">
-								<stop offset="0%" stop-color="rgba(255,255,255,0)" />
-								<stop offset="50%" stop-color="rgba(255,255,255,0.4)" />
-								<stop offset="100%" stop-color="rgba(255,255,255,0)" />
-							</linearGradient>
-						</defs>
-						<path
-							d="M0,30 C240,54 480,6 720,30 C960,54 1200,6 1440,30"
-							fill="none"
-							stroke="url(#curl2)"
-							stroke-width="1.5" />
-					</svg>
+				<div class="wave wave--line wave--dim1" aria-hidden="true">
+					<span class="depth-mark">200m</span>
 				</div>
 			</section>
 
 			<section id="about" class="zone">
 				<div class="marine-snow" aria-hidden="true" style="opacity: 0.22"></div>
 				<div class="wrap zone-body reveal">
-					<div class="about-inner">
+					<div class="about-inner zone-col">
 						<div class="about-glow" aria-hidden="true"></div>
 						<div class="section-label">
 							<span class="chip chip--teal"></span>
@@ -961,6 +967,13 @@
 							into an actual job description. The chess habit stuck: I still
 							think in terms of position and pattern before I think in terms of
 							syntax.
+						</p>
+						<p>
+							That's not just a nice metaphor, either — I'm a USCF-rated player
+							(peak 1827 standard, 1907 blitz) and spent a stretch ranked top 1%
+							globally in League of Legends and TFT, captaining a five-person
+							squad through regional tournaments. Different games, same
+							discipline: read the position fully before you commit to a line.
 						</p>
 						<p
 							style="
@@ -983,28 +996,15 @@
 						</div>
 					</div>
 				</div>
-				<div class="wave wave--to-contact" aria-hidden="true">
-					<svg viewBox="0 0 1440 60" preserveAspectRatio="none">
-						<defs>
-							<linearGradient id="curl3" x1="0" y1="0" x2="1" y2="0">
-								<stop offset="0%" stop-color="rgba(255,255,255,0)" />
-								<stop offset="50%" stop-color="rgba(255,255,255,0.28)" />
-								<stop offset="100%" stop-color="rgba(255,255,255,0)" />
-							</linearGradient>
-						</defs>
-						<path
-							d="M0,30 C240,54 480,6 720,30 C960,54 1200,6 1440,30"
-							fill="none"
-							stroke="url(#curl3)"
-							stroke-width="1.5" />
-					</svg>
+				<div class="wave wave--line wave--dim2" aria-hidden="true">
+					<span class="depth-mark">1000m</span>
 				</div>
 			</section>
 
 			<section id="contact" class="zone">
 				<div class="marine-snow" aria-hidden="true" style="opacity: 0.4"></div>
 				<div class="wrap zone-body reveal">
-					<div class="contact-inner">
+					<div class="contact-inner zone-col">
 						<div class="section-label">
 							<span class="chip chip--violet"></span>
 							<h2>Contact Me</h2>
@@ -1023,6 +1023,14 @@
 									name="name"
 									placeholder="Optional"
 									autocomplete="name" />
+							</label>
+							<label class="compose-field">
+								<span>Subject</span>
+								<input
+									type="text"
+									id="compose-subject"
+									name="subject"
+									placeholder="What's this about?" />
 							</label>
 							<label class="compose-field">
 								<span>Message</span>
@@ -1102,8 +1110,12 @@
 				composeForm.addEventListener("submit", function (e) {
 					e.preventDefault();
 					var name = document.getElementById("compose-name").value.trim();
+					var subjectInput = document
+						.getElementById("compose-subject")
+						.value.trim();
 					var message = document.getElementById("compose-message").value.trim();
-					var subject = name ? "Hey Brian, it's " + name : "Hey Brian";
+					var fallback = name ? "Hey Brian, it's " + name : "Hey Brian";
+					var subject = subjectInput || fallback;
 					var mailto =
 						"mailto:bchanyx@gmail.com" +
 						"?subject=" +
