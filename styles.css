@@ -1,49 +1,96 @@
-/* ===== Oceanyx shared design system ===== */
+/* ==========================================================================
+   Oceanyx: styles.css
+   One stylesheet for every page. All styling lives here; the HTML files
+   only carry markup.
+
+   CONTENTS
+   1.  Design tokens            colours, sizes. Change the look here first.
+   2.  Base                     reset, body, type, links
+   3.  Shared components        wrap, section label, buttons, tags, icons, header
+   4.  Home page
+       4a. Hero                 sky, stars, moon, sea surface, boat
+       4b. Depth zones          zone backgrounds, depth lines, depth gauge
+       4c. Projects
+       4d. Contact
+       4e. Footer
+   5.  Document pages           About and Chroma: banner, rail, article, sidebar
+   6.  Scroll reveal
+   7.  Responsive
+   8.  Reduced motion
+   ========================================================================== */
+
+/* ==========================================================================
+   1. DESIGN TOKENS
+   ========================================================================== */
 :root {
-	--sky-top: #070a1a;
-	--sky-bottom: #0d1c33;
-	--depth-2: #1e4468; /* shallow, moonlit — used by whichever section sits 2nd */
-	--depth-3: #0b1930; /* twilight — used by whichever section sits 3rd */
-	--contact-bg: #05040f; /* abyss */
+	/* Text */
+	--text: #eef1fb;
+	--text-muted: #b8c4d9;
+	--hairline: rgba(255, 255, 255, 0.14);
 
-	--text: #e8edf6;
-	--text-muted: #a9b7cc;
-	--hairline: rgba(255, 255, 255, 0.1);
-
-	--moon: #eceff7;
-	--moon-glow: rgba(236, 239, 247, 0.3);
+	/* Accents */
 	--teal: #35e0c6;
 	--cyan: #7fd1f5;
 	--violet: #b98bf0;
+	--coral: #ff9e8f;
+	--amber: #ffd27a;
+	--moon: #eceff7;
 
+	/* Night sky (hero). Indigo at the top, warming to a rose glow at the horizon. */
+	--sky: linear-gradient(
+		180deg,
+		#0a0d2e 0%,
+		#17154d 38%,
+		#3b2272 68%,
+		#7d3d83 88%,
+		#c0657f 100%
+	);
+
+	/* Water. Each zone's gradient starts on the colour the zone above it ends
+	   on, so there are never any seams between sections.
+	   NOTE: --sea-surface is also hard-coded inside the wave tiles in 4a
+	   (SVG data URIs can't read CSS variables). Change both together. */
+	--sea-surface: #1f93a8;
+	--sea-shallow: #16578a;
+	--sea-mid: #132e6c;
+	--sea-twilight: #1d1b5e;
+	--sea-abyss: #0a0622;
+	--footer-bg: #070419;
+
+	/* Layout */
 	--wrap: 1400px;
 	--gutter: clamp(24px, 6vw, 64px);
+	--header-h: 61px;
+	--footer-h: 64px;
+	/* Edge of the page content. The same distance applies on the left and the
+	   right, so the page is symmetrical. Used by the moon and the content. */
+	--edge: max(var(--gutter), calc((100% - var(--wrap)) / 2 + var(--gutter)));
+	/* Depth numbers (0m, 200m, 1000m) sit out at the left of the page. */
+	--mark-x: var(--gutter);
+
+	/* Hero sea strip height */
+	--sea-h: 96px;
 }
 
+/* ==========================================================================
+   2. BASE
+   ========================================================================== */
 * {
 	box-sizing: border-box;
 }
+
 html {
 	scroll-behavior: smooth;
 }
 
+/* Without this, any element that sets display (like .btn) ignores hidden. */
+[hidden] {
+	display: none !important;
+}
+
 body {
 	margin: 0;
-	/* The night sky stays flat and solid — no gradient shift at all — until
-	   the surface crossing just past the hero, where the water gradient
-	   (shallow → twilight → abyss) takes over in one continuous run. Still a
-	   single gradient object, so nothing ever hard-cuts at a section edge. */
-	background: linear-gradient(
-		180deg,
-		#070a1a 0%,
-		#070a1a 20%,
-		#12294a 26%,
-		#1e4468 34%,
-		#163454 55%,
-		#0b1930 72%,
-		#081222 88%,
-		#010108 100%
-	);
+	background: var(--sea-abyss);
 	color: var(--text);
 	font-family:
 		"Inter",
@@ -59,18 +106,18 @@ h1,
 h2,
 h3,
 .wordmark {
+	margin: 0;
+	color: var(--text);
 	font-family: "Space Grotesk", sans-serif;
 	font-weight: 600;
 	letter-spacing: -0.01em;
-	margin: 0;
-	color: var(--text);
 }
 
 a {
 	color: var(--text);
 	text-decoration-color: var(--hairline);
-	text-underline-offset: 3px;
 	text-decoration-thickness: 1.5px;
+	text-underline-offset: 3px;
 }
 a:hover {
 	text-decoration-color: var(--teal);
@@ -81,91 +128,43 @@ button:focus-visible {
 	outline-offset: 3px;
 }
 
+/* Hidden icon sprite at the top of each page */
+.sprite {
+	position: absolute;
+	width: 0;
+	height: 0;
+	overflow: hidden;
+}
+
+/* ==========================================================================
+   3. SHARED COMPONENTS
+   ========================================================================== */
+
+/* Layout column */
 .wrap {
+	position: relative;
+	z-index: 1;
 	max-width: var(--wrap);
 	margin: 0 auto;
 	padding: 0 var(--gutter);
-	position: relative;
-	z-index: 1;
 }
 
-/* NAV — a few faint stars baked in so it always reads as "part of the sky" */
-header {
-	position: sticky;
-	top: 0;
-	background-color: rgba(4, 6, 14, 0.82);
-	background-image:
-		radial-gradient(1px 1px at 12% 35%, rgba(255, 255, 255, 0.65), transparent),
-		radial-gradient(1px 1px at 28% 60%, rgba(255, 255, 255, 0.4), transparent),
-		radial-gradient(
-			1.3px 1.3px at 52% 30%,
-			rgba(255, 255, 255, 0.55),
-			transparent
-		),
-		radial-gradient(1px 1px at 74% 55%, rgba(255, 255, 255, 0.4), transparent),
-		radial-gradient(1px 1px at 91% 35%, rgba(255, 255, 255, 0.5), transparent);
-	background-repeat: no-repeat;
-	backdrop-filter: blur(8px);
-	border-bottom: 1px solid var(--hairline);
-	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-	z-index: 20;
-}
-.nav-inner {
-	max-width: var(--wrap);
-	margin: 0 auto;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 16px var(--gutter);
-}
-.wordmark {
-	font-size: 1.1rem;
-	text-decoration: none;
-}
-.nav-links {
-	display: flex;
-	gap: 22px;
-	align-items: center;
-	font-size: 0.95rem;
-}
-.nav-links a {
-	text-decoration: none;
-	color: var(--text-muted);
-}
-.nav-links a:hover {
-	color: var(--text);
-	text-decoration: underline;
-}
-.icon-link {
-	display: inline-flex;
-	align-items: center;
-	color: var(--text-muted);
-	text-decoration: none !important;
-}
-.icon-link:hover {
-	color: var(--teal);
-}
-.icon-link svg {
-	width: 20px;
-	height: 20px;
-	display: block;
-}
-.icon-label {
-	gap: 8px;
-}
-
-/* SECTION LABEL */
+/* Section label: coloured chip + heading */
 .section-label {
 	display: flex;
 	align-items: center;
 	gap: 12px;
 	margin-bottom: 26px;
 }
+.section-label h2 {
+	margin: 0;
+	line-height: 1.2;
+}
 .chip {
+	flex: none;
 	width: 12px;
 	height: 12px;
 	border-radius: 4px;
-	flex: none;
 }
 .chip--teal {
 	background: var(--teal);
@@ -177,55 +176,55 @@ header {
 	background: var(--violet);
 }
 
-/* BUTTONS */
+/* Buttons */
 .btn {
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
+	padding: 12px 22px;
+	border: none;
+	border-radius: 8px;
 	background: var(--teal);
 	color: #062018;
+	font-size: 0.95rem;
 	font-weight: 600;
 	text-decoration: none;
-	padding: 12px 22px;
-	border-radius: 8px;
-	font-size: 0.95rem;
-	border: none;
 	cursor: pointer;
+}
+.btn:hover {
+	background: #57ead4;
+	text-decoration: none;
 }
 .btn svg {
 	width: 18px;
 	height: 18px;
 }
-.btn:hover {
-	text-decoration: none;
-	background: #57ead4;
-}
-.btn-row {
-	display: flex;
-	gap: 14px;
-	flex-wrap: wrap;
-	align-items: center;
-}
 .btn-secondary {
+	border: 1px solid var(--hairline);
 	background: rgba(255, 255, 255, 0.08);
 	color: var(--text);
-	border: 1px solid var(--hairline);
 }
 .btn-secondary:hover {
 	background: rgba(255, 255, 255, 0.14);
 }
+.btn-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 14px;
+}
 
-/* TAGS / BADGE */
+/* Tags (cycle teal / cyan / violet) and status badge */
 .tags {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px;
 }
 .tag {
-	font-family: "IBM Plex Mono", monospace;
-	font-size: 0.78rem;
 	padding: 5px 10px;
 	border-radius: 6px;
+	font-family: "IBM Plex Mono", monospace;
+	font-size: 0.78rem;
 }
 .tag:nth-child(3n + 1) {
 	background: rgba(53, 224, 198, 0.16);
@@ -236,138 +235,1403 @@ header {
 	color: var(--cyan);
 }
 .tag:nth-child(3n) {
-	background: rgba(185, 139, 240, 0.16);
+	background: rgba(185, 139, 240, 0.18);
 	color: var(--violet);
 }
 .badge {
-	font-size: 0.75rem;
-	font-weight: 600;
-	background: rgba(53, 224, 198, 0.16);
-	color: var(--teal);
 	padding: 3px 10px;
 	border-radius: 100px;
+	background: rgba(53, 224, 198, 0.16);
+	color: var(--teal);
+	font-size: 0.75rem;
+	font-weight: 600;
 }
 
-/* EXTERNAL / FORWARD LINK ICON */
+/* Icons */
+.icon-link {
+	display: inline-flex;
+	align-items: center;
+	color: var(--text-muted);
+	text-decoration: none !important;
+}
+.icon-link:hover {
+	color: var(--teal);
+}
+.icon-link svg {
+	display: block;
+	width: 20px;
+	height: 20px;
+}
+.icon-label {
+	gap: 8px;
+}
 .ext-icon {
+	flex: none;
 	width: 15px;
 	height: 15px;
 	opacity: 0.75;
 	transition: transform 0.2s ease;
-	flex: none;
 }
 a:hover .ext-icon {
 	transform: translate(2px, -2px);
 }
 
-/* WAVE DIVIDERS — thin drawn current-lines, not filled blocks, so they never
-   interrupt the continuous body gradient behind them. The surface crossing
-   (hero → projects) uses a bigger, brighter variant defined per-page. */
-.wave {
-	display: block;
-	line-height: 0;
-	width: 100%;
-	height: 64px;
-	flex: none;
+/* Header. A few faint stars baked in so it reads as part of the sky. */
+.site-header {
+	position: sticky;
+	top: 0;
+	z-index: 20;
+	border-bottom: 1px solid var(--hairline);
+	background-color: rgba(10, 10, 38, 0.82);
+	background-image:
+		radial-gradient(1px 1px at 12% 35%, rgba(255, 255, 255, 0.65), transparent),
+		radial-gradient(1px 1px at 28% 60%, rgba(255, 255, 255, 0.4), transparent),
+		radial-gradient(
+			1.3px 1.3px at 52% 30%,
+			rgba(255, 255, 255, 0.55),
+			transparent
+		),
+		radial-gradient(1px 1px at 74% 55%, rgba(255, 255, 255, 0.4), transparent),
+		radial-gradient(1px 1px at 91% 35%, rgba(255, 255, 255, 0.5), transparent);
+	background-repeat: no-repeat;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+	backdrop-filter: blur(8px);
 }
-.wave svg {
+.nav-inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	max-width: var(--wrap);
+	height: calc(var(--header-h) - 1px); /* -1 for the border */
+	margin: 0 auto;
+	padding: 0 var(--gutter);
+}
+.wordmark {
+	font-size: 1.1rem;
+	text-decoration: none;
+}
+.nav-links {
+	display: flex;
+	align-items: center;
+	gap: 22px;
+	font-size: 0.95rem;
+}
+.nav-links a {
+	color: var(--text-muted);
+	text-decoration: none;
+}
+.nav-links a:hover {
+	color: var(--text);
+	text-decoration: underline;
+}
+.nav-links a[aria-current="page"] {
+	color: var(--text);
+	text-decoration: underline;
+	text-decoration-color: var(--teal);
+}
+
+/* ==========================================================================
+   4. HOME PAGE
+   ========================================================================== */
+
+/* ---- 4a. Hero ---------------------------------------------------------- */
+.hero-section {
+	--moon-size: clamp(150px, 19vw, 280px);
+	--moon-right: var(--edge);
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	min-height: calc(100vh - var(--header-h));
+	overflow: hidden;
+	background: var(--sky);
+}
+
+.hero {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	width: 100%;
+	padding-bottom: var(--sea-h);
+}
+.hero-text {
+	max-width: 560px;
+}
+.hero h1 {
+	font-size: clamp(2.4rem, 4.4vw, 3.4rem);
+	line-height: 1.08;
+}
+.hero p {
+	max-width: 46ch;
+	margin: 18px 0 0;
+	color: var(--text-muted);
+	font-size: 1.08rem;
+}
+.hero .btn-row {
+	margin-top: 28px;
+}
+
+@keyframes fadeUp {
+	from {
+		opacity: 0;
+		transform: translateY(14px);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+.hero h1 {
+	animation: fadeUp 0.7s ease both;
+}
+.hero p {
+	animation: fadeUp 0.7s ease 0.12s both;
+}
+.hero .btn-row {
+	animation: fadeUp 0.7s ease 0.24s both;
+}
+
+/* Stars */
+.stars {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	opacity: 0.85;
+	pointer-events: none;
+	background-repeat: no-repeat;
+	background-image:
+		radial-gradient(1.4px 1.4px at 8% 15%, #fff, transparent),
+		radial-gradient(1px 1px at 18% 8%, #fff, transparent),
+		radial-gradient(1.6px 1.6px at 27% 22%, #fff, transparent),
+		radial-gradient(1px 1px at 35% 12%, #fff, transparent),
+		radial-gradient(1.2px 1.2px at 44% 28%, #fff, transparent),
+		radial-gradient(1px 1px at 52% 9%, #fff, transparent),
+		radial-gradient(1.5px 1.5px at 61% 18%, #fff, transparent),
+		radial-gradient(1px 1px at 69% 6%, #fff, transparent),
+		radial-gradient(1.3px 1.3px at 77% 24%, #fff, transparent),
+		radial-gradient(1px 1px at 85% 14%, #fff, transparent),
+		radial-gradient(1.4px 1.4px at 93% 20%, #fff, transparent),
+		radial-gradient(1px 1px at 14% 38%, #fff, transparent),
+		radial-gradient(1.2px 1.2px at 30% 42%, #fff, transparent),
+		radial-gradient(1px 1px at 58% 35%, #fff, transparent),
+		radial-gradient(1.3px 1.3px at 74% 40%, #fff, transparent),
+		radial-gradient(1px 1px at 90% 44%, #fff, transparent),
+		radial-gradient(1px 1px at 5% 5%, #fff, transparent),
+		radial-gradient(1px 1px at 97% 8%, #fff, transparent);
+}
+
+/* Moon: one large moon, high in the sky */
+.moon {
+	position: absolute;
+	top: clamp(28px, 8vh, 80px);
+	right: var(--moon-right);
+	z-index: 0;
+	width: var(--moon-size);
+	aspect-ratio: 1;
+	pointer-events: none;
+	animation: fadeIn 1.4s ease both;
+}
+.moon::before {
+	content: "";
+	position: absolute;
+	inset: -45%;
+	border-radius: 50%;
+	background: radial-gradient(
+		circle,
+		rgba(236, 239, 247, 0.22) 0,
+		rgba(185, 139, 240, 0.12) 35%,
+		transparent 68%
+	);
+	animation: halo 9s ease-in-out infinite alternate;
+}
+.moon svg {
+	position: relative;
 	display: block;
 	width: 100%;
 	height: 100%;
+	filter: drop-shadow(0 0 28px rgba(236, 239, 247, 0.35));
+}
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@keyframes halo {
+	from {
+		opacity: 0.75;
+		transform: scale(0.97);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1.03);
+	}
 }
 
-/* DEPTH RAIL — fixed scroll-position indicator, desktop only. Doubles as
-   in-page navigation (each tick is a real anchor link). */
-.depth-rail {
+/* Sea surface. Three scrolling wave layers with the boat between the middle
+   and front layers, so the hull sits in the water. The front layer's fill
+   matches the colour at the top of #projects, so the two blend seamlessly. */
+.sea {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	height: var(--sea-h);
+	pointer-events: none;
+}
+.wave {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: calc(100% + 600px); /* one extra tile so the loop never shows a gap */
+	height: var(--sea-h);
+	background-repeat: repeat-x;
+	background-position: 0 100%;
+	background-size: 600px var(--sea-h);
+	animation: drift var(--drift, 20s) linear infinite;
+	will-change: transform;
+}
+@keyframes drift {
+	from {
+		transform: translateX(-600px);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+/* Each tile is 600 x 96 and repeats seamlessly. Fills: back #463fb0 @ .5,
+   middle #247ca5 @ .7, front #1f93a8 (the surface colour) with a light crest. */
+.wave--back {
+	--drift: 38s;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='96' viewBox='0 0 600 96'%3E%3Cpath d='M0 30Q100 18 200 30T400 30T600 30V96H0Z' fill='%23463fb0' fill-opacity='.5'/%3E%3C/svg%3E");
+}
+.wave--mid {
+	--drift: 26s;
+	animation-direction: reverse;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='96' viewBox='0 0 600 96'%3E%3Cpath d='M0 40Q150 20 300 40T600 40V96H0Z' fill='%23247ca5' fill-opacity='.7'/%3E%3C/svg%3E");
+}
+.wave--front {
+	--drift: 16s;
+	z-index: 2;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='96' viewBox='0 0 600 96'%3E%3Cpath d='M0 52Q75 40 150 52T300 52T450 52T600 52V96H0Z' fill='%231f93a8'/%3E%3Cpath d='M0 52Q75 40 150 52T300 52T450 52T600 52' fill='none' stroke='%23e8edf6' stroke-opacity='.9' stroke-width='2'/%3E%3C/svg%3E");
+}
+
+/* Sea level (0 m): a dashed datum line at the average height of the waves */
+.sea-datum {
+	position: absolute;
+	right: 0;
+	bottom: 44px;
+	left: 0;
+	z-index: 3;
+	border-top: 1px dashed rgba(232, 237, 246, 0.4);
+}
+.sea .depth-mark {
+	position: absolute;
+	bottom: 50px;
+	left: var(--mark-x);
+	z-index: 4;
+	margin: 0;
+}
+
+/* Moonlight on the water, directly below the moon */
+.sea-glint {
+	position: absolute;
+	right: calc(var(--moon-right) + var(--moon-size) / 2 - 70px);
+	bottom: 0;
+	z-index: 3;
+	width: 140px;
+	height: 56px;
+	background: radial-gradient(
+		ellipse at 50% 0,
+		rgba(236, 239, 247, 0.5),
+		transparent 70%
+	);
+	animation: glint 6s ease-in-out infinite alternate;
+}
+@keyframes glint {
+	from {
+		opacity: 0.6;
+		transform: scaleX(0.9);
+	}
+	to {
+		opacity: 1;
+		transform: scaleX(1.1);
+	}
+}
+
+/* Boat: sails across about every 95 seconds, then rests off-screen briefly */
+.boat {
+	position: absolute;
+	bottom: 30px;
+	left: 0;
+	z-index: 1;
+	width: clamp(70px, 7vw, 108px);
+	animation: sail 95s linear infinite;
+	animation-delay: -22s; /* already underway when the page loads */
+	will-change: transform;
+}
+.boat-rock {
+	transform-origin: 50% 85%;
+	animation: rock 5s ease-in-out infinite;
+}
+.boat svg {
+	display: block;
+	width: 100%;
+	height: auto;
+	overflow: visible;
+}
+.boat-lantern {
+	filter: drop-shadow(0 0 5px rgba(255, 210, 122, 0.9));
+}
+@keyframes sail {
+	0% {
+		transform: translateX(-12vw);
+	}
+	88%,
+	100% {
+		transform: translateX(104vw);
+	}
+}
+@keyframes rock {
+	0%,
+	100% {
+		transform: translateY(0) rotate(-2deg);
+	}
+	50% {
+		transform: translateY(-3px) rotate(2deg);
+	}
+}
+
+/* Pause hero animations while the hero is off-screen (toggled in site.js) */
+.hero-section.is-paused *,
+.hero-section.is-paused *::before {
+	animation-play-state: paused !important;
+}
+
+/* ---- 4b. Depth zones --------------------------------------------------- */
+.zone {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	/* Each zone is exactly one screen tall. Scrolled to its top, the line
+	   at its bottom sits on the bottom edge of the screen and the line above
+	   it (the previous zone's) is just off the top. */
+	min-height: 100vh;
+	min-height: 100svh;
+	overflow: hidden;
+}
+/* Contact has no depth line, so it leaves room for the footer instead. */
+#contact.zone {
+	min-height: calc(100vh - var(--footer-h));
+	min-height: calc(100svh - var(--footer-h));
+}
+.zone-body {
+	display: flex;
+	flex: 1;
+	width: 100%; /* without this the block shrinks to its content and floats to the centre */
+	align-items: center;
+	/* Top padding keeps content clear of the sticky header. */
+	padding-block: calc(var(--header-h) + 16px) 28px;
+}
+
+/* Each zone's gradient picks up where the one above it ends. */
+#projects {
+	background: linear-gradient(
+		180deg,
+		var(--sea-surface) 0,
+		var(--sea-shallow) 140px,
+		var(--sea-mid) 100%
+	);
+}
+#contact {
+	background: linear-gradient(
+		180deg,
+		var(--sea-mid),
+		var(--sea-twilight) 55%,
+		var(--sea-abyss)
+	);
+}
+
+/* Floating specks of "marine snow" */
+.marine-snow {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	opacity: var(--snow, 0.3);
+	pointer-events: none;
+	background-size: 260px 320px;
+	background-image:
+		radial-gradient(
+			1.3px 1.3px at 12% 18%,
+			rgba(255, 255, 255, 0.4),
+			transparent 60%
+		),
+		radial-gradient(
+			1px 1px at 55% 8%,
+			rgba(255, 255, 255, 0.3),
+			transparent 60%
+		),
+		radial-gradient(
+			1.4px 1.4px at 78% 40%,
+			rgba(255, 255, 255, 0.35),
+			transparent 60%
+		),
+		radial-gradient(
+			1px 1px at 30% 55%,
+			rgba(255, 255, 255, 0.28),
+			transparent 60%
+		),
+		radial-gradient(
+			1.2px 1.2px at 90% 70%,
+			rgba(255, 255, 255, 0.32),
+			transparent 60%
+		),
+		radial-gradient(
+			1px 1px at 15% 85%,
+			rgba(255, 255, 255, 0.25),
+			transparent 60%
+		),
+		radial-gradient(
+			1.3px 1.3px at 65% 92%,
+			rgba(255, 255, 255, 0.3),
+			transparent 60%
+		),
+		radial-gradient(
+			1px 1px at 45% 35%,
+			rgba(255, 255, 255, 0.25),
+			transparent 60%
+		);
+	animation: snowDrift 60s linear infinite;
+}
+#contact .marine-snow {
+	--snow: 0.4;
+}
+@keyframes snowDrift {
+	from {
+		background-position: 0 0;
+	}
+	to {
+		background-position: -130px 480px;
+	}
+}
+
+/* Depth lines: the hard edge at the bottom of a zone, with its depth reading.
+   The label sits just above its line and names the depth the line marks. */
+.depth-line {
+	position: relative;
+	display: flex;
+	align-items: flex-end;
+	height: 44px;
+}
+.depth-line::after {
+	content: "";
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	height: 2px;
+	background: rgba(232, 237, 246, 0.85);
+}
+.depth-line.depth-line--dim1::after {
+	background: rgba(232, 237, 246, 0.5);
+}
+.depth-line.depth-line--dim2::after {
+	background: rgba(232, 237, 246, 0.3);
+}
+.depth-mark {
+	position: relative;
+	margin: 0 0 8px var(--mark-x);
+	color: var(--text-muted);
+	font-family: "IBM Plex Mono", monospace;
+	font-size: 0.7rem;
+	line-height: 1.4;
+	letter-spacing: 0.02em;
+}
+.depth-line--dim1 .depth-mark,
+.depth-line--dim2 .depth-mark {
+	opacity: 0.8;
+}
+
+/* Depth gauge (desktop): a ruler in the right margin. The marker slides down
+   as you scroll, the readout shows an approximate depth, and the three hollow
+   stops jump to each zone. Positions and numbers are set in site.js. */
+.gauge {
 	position: fixed;
-	right: 30px;
 	top: 50%;
-	transform: translateY(-50%);
+	right: 20px;
 	z-index: 15;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
-	gap: 30px;
+	gap: 12px;
+	transform: translateY(-50%);
 }
-.depth-rail::before {
+.gauge-track {
+	--p: 0; /* scroll progress, 0 to 1 */
+	position: relative;
+	width: 24px;
+	height: clamp(150px, 30vh, 240px);
+}
+.gauge-track::before {
+	/* the line */
 	content: "";
 	position: absolute;
-	top: -6px;
-	bottom: -6px;
+	top: 0;
 	right: 3px;
+	bottom: 0;
 	width: 1px;
-	background: rgba(255, 255, 255, 0.14);
+	background: rgba(255, 255, 255, 0.26);
 }
-.depth-tick {
-	position: relative;
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	text-decoration: none !important;
-	color: var(--text-muted);
-}
-.depth-tick::after {
+.gauge-track::after {
+	/* ruler ticks */
 	content: "";
+	position: absolute;
+	top: 0;
+	right: 4px;
+	bottom: 0;
+	width: 6px;
+	background: repeating-linear-gradient(
+		to bottom,
+		rgba(255, 255, 255, 0.3) 0 1px,
+		transparent 1px 8px
+	);
+}
+.gauge-fill {
+	position: absolute;
+	top: 0;
+	right: 3px;
+	z-index: 1;
+	width: 1px;
+	height: calc(var(--p) * 100%);
+	background: linear-gradient(to bottom, rgba(127, 209, 245, 0), var(--cyan));
+}
+.gauge-marker {
+	position: absolute;
+	top: calc(var(--p) * 100%);
+	right: -1px;
+	z-index: 3;
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	background: var(--cyan);
+	box-shadow:
+		0 0 0 3px rgba(127, 209, 245, 0.2),
+		0 0 12px 2px rgba(127, 209, 245, 0.55);
+	transform: translateY(-50%);
+}
+.gauge-stop {
+	position: absolute;
+	right: -3px;
+	z-index: 2;
+	display: block;
+	width: 18px;
+	height: 18px;
+	text-decoration: none !important;
+	transform: translateY(-50%);
+}
+.gauge-stop:nth-of-type(1) {
+	top: 0;
+}
+.gauge-stop:nth-of-type(2) {
+	top: 50%;
+}
+.gauge-stop:nth-of-type(3) {
+	top: 100%;
+}
+.gauge-stop::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	right: 3px;
 	width: 7px;
 	height: 7px;
+	border: 1px solid rgba(255, 255, 255, 0.55);
 	border-radius: 50%;
-	background: rgba(255, 255, 255, 0.28);
+	background: var(--sea-twilight);
+	transform: translateY(-50%);
 	transition:
-		background 0.4s ease,
-		box-shadow 0.4s ease,
-		transform 0.4s ease;
+		border-color 0.3s ease,
+		background 0.3s ease;
 }
-.depth-tick span {
+.gauge-stop:hover::after,
+.gauge-stop.is-active::after {
+	border-color: var(--cyan);
+	background: var(--cyan);
+}
+.gauge-stop span {
+	position: absolute;
+	top: 50%;
+	right: calc(100% + 6px);
+	padding: 3px 8px;
+	border-radius: 6px;
+	background: rgba(8, 6, 30, 0.88);
+	color: var(--text);
 	font-family: "IBM Plex Mono", monospace;
 	font-size: 0.7rem;
-	opacity: 0;
-	transform: translateX(4px);
-	transition:
-		opacity 0.3s ease,
-		transform 0.3s ease;
 	white-space: nowrap;
+	opacity: 0;
+	pointer-events: none;
+	transform: translate(4px, -50%);
+	transition:
+		opacity 0.25s ease,
+		transform 0.25s ease;
 }
-.depth-tick:hover span {
-	opacity: 0.7;
-	transform: none;
+/* Names appear on hover or keyboard focus, so the gauge stays slim. */
+.gauge-stop:hover span,
+.gauge-stop:focus-visible span {
+	opacity: 1;
+	transform: translate(0, -50%);
 }
-.depth-tick.is-active::after {
-	background: var(--cyan);
-	box-shadow: 0 0 8px 2px rgba(127, 209, 245, 0.6);
-	transform: scale(1.3);
-}
-.depth-tick.is-active span {
-	opacity: 0.9;
-	color: var(--text);
-	transform: none;
-}
-@media (max-width: 1150px) {
-	.depth-rail {
-		display: none;
-	}
+.gauge-readout {
+	color: var(--text-muted);
+	font-family: "IBM Plex Mono", monospace;
+	font-size: 0.72rem;
+	font-variant-numeric: tabular-nums;
+	text-align: right;
 }
 
-/* SCROLL REVEAL */
-.reveal {
+/* Submersion veil: a fixed vignette that deepens with scroll (--depth is set
+   in site.js, 0 at the top and 1 at the bottom). */
+.depth-veil {
+	position: fixed;
+	inset: 0;
+	z-index: 5;
+	opacity: calc(var(--depth, 0) * 0.8);
+	pointer-events: none;
+	background: radial-gradient(
+		ellipse at 50% 42%,
+		transparent 38%,
+		rgba(6, 3, 26, 0.5) 100%
+	);
+}
+
+/* ---- 4c. Projects ------------------------------------------------------ */
+.projects-col {
+	width: 100%;
+}
+.projects-list {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	align-items: start;
+	gap: 32px;
+}
+.project {
+	z-index: 1;
+	padding: 34px;
+}
+.projects-list .project:nth-of-type(2) {
+	--bar: linear-gradient(90deg, var(--violet), var(--cyan), var(--teal));
+}
+.project-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+}
+.project-title-group {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+}
+.project-title-group h3 {
+	font-size: 1.35rem;
+}
+.project-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	text-decoration-color: rgba(255, 255, 255, 0.3);
+}
+.project-link:hover {
+	text-decoration-color: var(--teal);
+}
+.project-head .icon-link {
+	flex: none;
+}
+.project-head .icon-link svg {
+	width: 22px;
+	height: 22px;
+}
+.tagline {
+	margin: 10px 0 0;
+	color: var(--text-muted);
+	font-size: 1.02rem;
+}
+.project p.desc {
+	max-width: 58ch;
+	margin: 16px 0 0;
+	color: var(--text);
+}
+.project .tags {
+	margin-top: 22px;
+}
+.project-meta {
+	margin: 18px 0 0;
+	color: var(--text-muted);
+	font-family: "IBM Plex Mono", monospace;
+	font-size: 0.75rem;
+	opacity: 0.8;
+}
+.case-study-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	margin-top: 22px;
+	color: var(--text-muted);
+	font-size: 0.92rem;
+}
+.case-study-link:hover {
+	color: var(--text);
+}
+
+/* ---- 4d. Contact ------------------------------------------------------- */
+.contact-inner {
+	position: relative;
+	z-index: 1;
+	width: 100%;
+}
+/* Two columns spanning the full content width */
+.split {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	align-items: start;
+	gap: clamp(32px, 6vw, 96px);
+}
+#contact p {
+	max-width: 50ch;
+	margin: 0;
+	color: var(--text-muted);
+}
+#contact .contact-lead {
+	color: var(--text);
+	font-size: 1.1rem;
+}
+.open-to {
+	margin-top: 30px;
+}
+.open-to h3 {
+	margin-bottom: 10px;
+	color: var(--text-muted);
+	font-family: "IBM Plex Mono", monospace;
+	font-size: 0.75rem;
+	font-weight: 500;
+	letter-spacing: 0.04em;
+}
+.contact-actions {
+	margin-top: 30px;
+}
+.contact-links {
+	margin-top: 22px;
+}
+
+/* The form is a card like the project cards. It builds a mailto: link and
+   opens the visitor's own mail app; nothing is sent through this site. */
+.compose {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	width: 100%;
+	max-width: 520px;
+	justify-self: end;
+	padding: 30px;
+}
+.compose-title {
+	font-size: 1.2rem;
+}
+.compose-field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	color: var(--text-muted);
+	font-size: 0.85rem;
+}
+.compose-field input,
+.compose-field textarea {
+	padding: 10px 12px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 8px;
+	background: rgba(6, 4, 30, 0.45);
+	color: var(--text);
+	font: inherit;
+	resize: vertical;
+}
+.compose-field input:focus,
+.compose-field textarea:focus {
+	border-color: var(--cyan);
+	outline: none;
+}
+.compose-field input::placeholder,
+.compose-field textarea::placeholder {
+	color: var(--text-muted);
+	opacity: 0.65;
+}
+.compose .btn {
+	align-self: flex-start;
+}
+#contact .compose-note {
+	margin: 0;
+	font-size: 0.78rem;
+	opacity: 0.8;
+}
+
+/* Shared card look: dark glass with a coloured bar across the top.
+   Used by project cards, the contact form and the document sidebar. */
+.project,
+.compose,
+.glance {
+	position: relative;
+	overflow: hidden;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	border-radius: 14px;
+	background: rgba(10, 12, 50, 0.38);
+	backdrop-filter: blur(6px);
+}
+.project::before,
+.compose::before,
+.glance::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	height: 4px;
+	background: var(
+		--bar,
+		linear-gradient(90deg, var(--teal), var(--cyan), var(--violet))
+	);
+}
+.compose {
+	--bar: linear-gradient(90deg, var(--violet), var(--cyan), var(--teal));
+}
+
+/* ---- 4e. Footer -------------------------------------------------------- */
+.site-footer {
+	display: flex;
+	align-items: center;
+	height: var(--footer-h);
+	border-top: 1px solid var(--hairline);
+	background: var(--footer-bg);
+}
+.footer-inner {
+	display: flex;
+	width: 100%;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	color: var(--text-muted);
+	font-size: 0.85rem;
+}
+.visit-badge {
+	height: 14px;
+	opacity: 0.85;
+}
+
+/* ==========================================================================
+   5. DOCUMENT PAGES (About, Chroma case study)
+   Layout: back link and banner across the top, then three columns below:
+   [section rail | article | sidebar]. The rail and sidebar stay in view
+   while you scroll; the article keeps a comfortable reading width.
+   ========================================================================== */
+.page-doc {
+	min-height: 100vh;
+	background: linear-gradient(
+		180deg,
+		var(--sea-mid) 0%,
+		var(--sea-twilight) 45%,
+		var(--sea-abyss) 100%
+	);
+}
+.page {
+	padding-top: 44px;
+	padding-bottom: 90px;
+}
+.doc-shell {
+	--rail-w: 170px;
+	--aside-w: 290px;
+	--col-gap: 44px;
+}
+.back-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	margin-bottom: 32px;
+	color: var(--text-muted);
+	font-size: 0.9rem;
+	text-decoration: none;
+}
+.back-link:hover {
+	color: var(--text);
+}
+.back-link svg {
+	width: 16px;
+	height: 16px;
+}
+
+/* Banner */
+.banner {
+	margin-bottom: 44px;
+	padding-bottom: 32px;
+	border-bottom: 1px solid var(--hairline);
+}
+.banner h1 {
+	display: inline-block;
+	font-size: clamp(2.2rem, 5vw, 3rem);
+}
+.banner .badge {
+	margin-left: 10px;
+	vertical-align: middle;
+}
+.banner .tagline {
+	max-width: 60ch;
+	margin-top: 14px;
+	font-size: 1.15rem;
+}
+.banner .btn-row {
+	margin-top: 24px;
+}
+
+/* Three columns */
+.doc-grid {
+	display: grid;
+	grid-template-columns: var(--rail-w) minmax(0, 1fr) var(--aside-w);
+	align-items: start;
+	gap: var(--col-gap);
+}
+.doc-rail,
+.doc-aside {
+	position: sticky;
+	top: 100px;
+}
+.doc-rail {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+.doc-tick {
+	padding-left: 14px;
+	border-left: 2px solid var(--hairline);
+	color: var(--text-muted);
+	font-family: "IBM Plex Mono", monospace;
+	font-size: 0.76rem;
+	line-height: 1.4;
+	text-decoration: none !important;
+	transition:
+		color 0.25s ease,
+		border-color 0.25s ease;
+}
+.doc-tick:hover {
+	color: var(--text);
+}
+.doc-tick.is-active {
+	border-left-color: var(--cyan);
+	color: var(--text);
+}
+.doc-content {
+	min-width: 0;
+}
+
+/* Sidebar: an optional photo, then a card of key facts */
+.portrait {
+	margin: 0 0 16px;
+	overflow: hidden;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	border-radius: 14px;
+}
+.portrait img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 4 / 5;
+	object-fit: cover;
+}
+.glance {
+	padding: 26px 22px 22px;
+}
+.glance h2,
+.aside-label {
+	margin-bottom: 16px;
+	color: var(--text-muted);
+	font-family: "IBM Plex Mono", monospace;
+	font-size: 0.75rem;
+	font-weight: 500;
+	letter-spacing: 0.04em;
+}
+.glance dl {
+	display: grid;
+	gap: 16px;
+	margin: 0;
+}
+.glance dt {
+	margin-bottom: 2px;
+	color: var(--text-muted);
+	font-family: "IBM Plex Mono", monospace;
+	font-size: 0.7rem;
+}
+.glance dd {
+	margin: 0;
+	font-size: 0.92rem;
+	line-height: 1.5;
+}
+
+/* Gauge-style number tiles (About sidebar) */
+.readouts {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 12px;
+}
+.readout {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 20px 14px 14px;
+	overflow: hidden;
+	border: 1px solid rgba(255, 255, 255, 0.16);
+	border-radius: 12px;
+	background: rgba(10, 12, 50, 0.34);
+	backdrop-filter: blur(6px);
+}
+.readout::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	height: 3px;
+	background: var(--accent);
+}
+.readout--teal {
+	--accent: var(--teal);
+}
+.readout--cyan {
+	--accent: var(--cyan);
+}
+.readout--violet {
+	--accent: var(--violet);
+}
+.readout--coral {
+	--accent: var(--coral);
+}
+.readout-value {
+	color: var(--accent);
+	font-family: "Space Grotesk", sans-serif;
+	font-size: 1.7rem;
+	font-weight: 600;
+	line-height: 1.1;
+}
+.readout-label {
+	color: var(--text-muted);
+	font-family: "IBM Plex Mono", monospace;
+	font-size: 0.68rem;
+	line-height: 1.5;
+}
+
+/* Article */
+article .section-label {
+	margin-bottom: 18px;
+}
+article section {
+	margin: 0 0 56px;
+	scroll-margin-top: 96px;
+}
+article h2 {
+	font-size: 1.4rem;
+}
+article p {
+	margin: 0 0 14px;
+	color: var(--text-muted);
+}
+article p:last-child {
+	margin-bottom: 0;
+}
+article em {
+	color: var(--text);
+	font-style: italic;
+}
+article a {
+	color: var(--text);
+}
+
+/* Bullet lists. The dot is positioned from the first line's centre. */
+.bullets {
+	display: grid;
+	gap: 10px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.bullets li {
+	position: relative;
+	padding-left: 20px;
+	color: var(--text-muted);
+}
+.bullets li::before {
+	content: "";
+	position: absolute;
+	top: calc(0.85em - 3px);
+	left: 2px;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--cyan);
+	opacity: 0.8;
+}
+
+/* Philosophy: numbered principles */
+.principles {
+	display: grid;
+	gap: 26px;
+	margin: 24px 0 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: principle;
+}
+.principle {
+	display: grid;
+	grid-template-columns: 40px minmax(0, 1fr);
+	gap: 0 14px;
+	counter-increment: principle;
+}
+.principle::before {
+	content: counter(principle, decimal-leading-zero);
+	padding-top: 0.2em;
+	color: var(--teal);
+	font-family: "IBM Plex Mono", monospace;
+	font-size: 0.8rem;
+}
+.principle h3 {
+	font-size: 1.05rem;
+	line-height: 1.4;
+}
+.principle p {
+	grid-column: 2;
+	margin: 6px 0 0;
+}
+
+/* How it works: dimension cards */
+.mechanic-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 16px;
+	margin: 20px 0;
+}
+.mechanic-card {
+	padding: 18px;
+	border: 1px solid var(--hairline);
+	border-radius: 10px;
+	background: rgba(255, 255, 255, 0.05);
+}
+.mechanic-card h3 {
+	margin-bottom: 8px;
+	font-size: 1rem;
+}
+.mechanic-card p {
+	margin: 0;
+	font-size: 0.92rem;
+}
+
+/* Demo video. Drop chroma-demo.mp4 into /assets. If the file is missing,
+   site.js adds .is-empty and the placeholder shows instead. */
+.demo {
+	position: relative;
+	margin-top: 20px;
+	overflow: hidden;
+	border: 1px solid var(--hairline);
+	border-radius: 12px;
+	background: rgba(6, 4, 24, 0.7);
+}
+.demo video {
+	display: block;
+	width: 100%;
+	height: auto;
+	background: #06041a;
+}
+.demo-empty {
+	display: none;
+	align-items: center;
+	justify-content: center;
+	padding: 16px;
+	color: var(--text-muted);
+	font-size: 0.95rem;
+	text-align: center;
+}
+.demo.is-empty {
+	aspect-ratio: 16 / 9;
+	border-style: dashed;
+}
+.demo.is-empty video {
+	display: none;
+}
+.demo.is-empty .demo-empty {
+	position: absolute;
+	inset: 0;
+	display: flex;
+}
+
+/* Where it stands */
+.status-columns {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 32px;
+	margin: 20px 0;
+}
+.status-columns h3 {
+	margin-bottom: 12px;
+	font-size: 0.95rem;
+}
+
+/* Closing */
+.closing {
+	padding-top: 36px;
+	border-top: 1px solid var(--hairline);
+}
+.closing .btn-row {
+	margin-top: 20px;
+}
+
+/* ==========================================================================
+   6. SCROLL REVEAL
+   Content is only hidden once site.js has confirmed it can reveal it
+   (.reveal-ready on <html>). If the script fails, nothing stays hidden.
+   ========================================================================== */
+.reveal-ready .reveal {
 	opacity: 0;
 	transform: translateY(18px);
 	transition:
 		opacity 0.6s ease,
 		transform 0.6s ease;
 }
-.reveal.is-visible {
+.reveal-ready .reveal.is-visible {
 	opacity: 1;
 	transform: none;
 }
 
+/* ==========================================================================
+   7. RESPONSIVE
+   ========================================================================== */
+@media (max-width: 1150px) {
+	.gauge {
+		display: none;
+	}
+}
+
+@media (max-width: 1180px) {
+	/* Drop the section rail; keep the article and sidebar. */
+	.doc-grid {
+		grid-template-columns: minmax(0, 1fr) var(--aside-w);
+	}
+	.doc-rail {
+		display: none;
+	}
+}
+
+@media (max-width: 900px) {
+	.projects-list {
+		grid-template-columns: 1fr;
+	}
+	/* Stacked layouts are taller than a screen anyway, so sections size to
+	   their content and the two-column splits become one column. */
+	.zone,
+	#contact.zone {
+		min-height: 0;
+	}
+	.zone-body {
+		padding-block: 48px 28px;
+	}
+	.split {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 32px;
+	}
+	.compose {
+		justify-self: start;
+	}
+	/* Document pages: one column, sidebar first as a summary. */
+	.doc-grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.doc-aside {
+		position: static;
+		order: -1;
+	}
+	.doc-shell {
+		max-width: 640px;
+	}
+}
+
+@media (max-width: 760px) {
+	/* The moon stays overhead, centred above the text. */
+	.hero-section {
+		--moon-size: 140px;
+		--moon-right: calc(50% - 70px);
+		min-height: 0;
+	}
+	.moon {
+		top: 28px;
+	}
+	.hero {
+		align-items: flex-start;
+		padding-top: calc(var(--moon-size) + 76px);
+		padding-bottom: calc(var(--sea-h) + 36px);
+	}
+	.nav-links {
+		gap: 16px;
+		font-size: 0.88rem;
+	}
+	.project {
+		padding: 24px;
+	}
+	.compose {
+		padding: 24px;
+	}
+	.depth-line {
+		height: 36px;
+	}
+}
+
+@media (max-width: 640px) {
+	.mechanic-grid {
+		grid-template-columns: 1fr;
+	}
+	.status-columns {
+		grid-template-columns: 1fr;
+		gap: 24px;
+	}
+}
+
+/* ==========================================================================
+   8. REDUCED MOTION
+   ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
-	.reveal {
+	html {
+		scroll-behavior: auto;
+	}
+	.hero h1,
+	.hero p,
+	.hero .btn-row,
+	.moon,
+	.moon::before,
+	.wave,
+	.sea-glint,
+	.boat,
+	.boat-rock,
+	.marine-snow {
+		animation: none;
+	}
+	/* Park the boat in view instead of sailing it. */
+	.boat {
+		left: 58%;
+	}
+	.reveal-ready .reveal {
 		transition: none;
 		opacity: 1;
 		transform: none;
 	}
-	.depth-tick::after,
-	.depth-tick span {
+	.gauge-stop::after,
+	.gauge-stop span,
+	.doc-tick {
 		transition: none;
 	}
 }

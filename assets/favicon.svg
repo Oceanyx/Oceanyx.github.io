@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Circular night-sky badge with a crescent moon and one star -->
+  <defs>
+    <mask id="cut">
+      <rect width="100" height="100" fill="#fff" />
+      <circle cx="46" cy="38" r="27" fill="#000" />
+    </mask>
+  </defs>
+  <circle cx="50" cy="50" r="50" fill="#241b66" />
+  <circle cx="58" cy="46" r="27" fill="#eceff7" mask="url(#cut)" />
+  <circle cx="74" cy="72" r="3.6" fill="#7fd1f5" />
+</svg>
